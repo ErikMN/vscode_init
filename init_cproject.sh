@@ -15,8 +15,9 @@ echo
 # Create a C project with vscode tasks in the current directory:
 mkdir -p $APP && cp -r $BASEDIR/c_src/. ./$APP/ && mkdir -p ./$APP/.vscode &&
 cp $BASEDIR/vscode/*.json ./$APP/.vscode/ &&
-sed -i "s/xxxxxxxxx/$APP/g" ./$APP/Makefile ./$APP/.gitignore &&
-cd ./$APP/ && git init && git add -A && git commit -m 'Initial commit' && cd .. &&
+sed -i.bak "s/xxxxxxxxx/$APP/g" ./$APP/Makefile ./$APP/.gitignore &&
+cd ./$APP/ && rm *.bak .*.bak &&
+git init && git add -A && git commit -m 'Initial commit' && cd ..
 code ./$APP &&
 
 echo &&
