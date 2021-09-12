@@ -6,15 +6,16 @@
 #include <string.h>
 #include <getopt.h>
 #include <sys/types.h>
+#include <stdbool.h>
 
 int
 main(int argc, char *argv[])
 {
-  printf("Hello World!\n");
+  printf("\nHello World!\n");
   printf("%s:%d\n", __FILE__, __LINE__);
 
 #ifdef DEV
-  printf("*** Development build\n");
+  printf("\n*** Development build\n");
   printf("Build: %s %s\n", __DATE__, __TIME__);
 #endif
 
