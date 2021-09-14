@@ -132,6 +132,32 @@
           ]
         }
       ]
+    },
+    {
+      "label": "VALGRIND",
+      "detail": "Memcheck the app",
+      "type": "shell",
+      "command": [
+        "valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./${workspaceFolderBasename}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": [
+        {
+          "base": "$gcc",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}"
+          ]
+        }
+      ]
     }
   ]
 }
