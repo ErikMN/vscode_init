@@ -7,6 +7,10 @@
 #include <getopt.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <assert.h>
+#include <stdint.h>
 
 int
 main(int argc, char *argv[])

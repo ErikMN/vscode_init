@@ -37,8 +37,3 @@ $(PROGS): $(OBJS)
 
 clean:
 	$(RM) $(PROGS) $(OBJS)
-
-# Install on device:
-TARGET_IP = 192.168.0.225
-install: all
-	sshpass -p "pass" scp $(PROGS) root@$(TARGET_IP):/tmp
