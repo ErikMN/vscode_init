@@ -36,7 +36,7 @@ CC = arm-linux-gnueabihf-gcc
 
 ## Shell profile alias
 
-Add to ~/.zshrc
+Add to ~/.zshrc (or your shell config of choice)
 
 ```sh
 alias copy-vsctasks="source $HOME/vscode_init/copy_tasks.sh"
@@ -44,6 +44,10 @@ alias copy-vsctasks="source $HOME/vscode_init/copy_tasks.sh"
 
 ```sh
 alias create-c-app="source $HOME/vscode_init/init_cproject.sh"
+```
+
+```sh
+alias create-cpp-app="source $HOME/vscode_init/init_cpp_project.sh"
 ```
 
 In a directory of choice then run:
