@@ -1,39 +1,42 @@
-LDLIBS = -lm
-# LDLIBS += `(pkg-config --libs mylib)`
-# CFLAGS = `(pkg-config --cflags mylib)`
 CC = gcc
-
 PROGS = xxxxxxxxx
+LDFLAGS = -lm
 
-.PHONY: all debug prod dev clean
-
-# CFLAGS += -Wall -Wextra -Wmaybe-uninitialized
-# CFLAGS += -Wpedantic
-CFLAGS += -Werror
-
-# Building With Address Sanitzer:
-# CFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
-# LDLIBS += -fsanitize=address
+# PKGS += mylib
+ifdef PKGS
+	LDLIBS += $(shell pkg-config --libs $(PKGS))
+	CFLAGS += $(shell pkg-config --cflags $(PKGS))
+endif
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
+CFLAGS += -Werror
 
+ifeq ($(FINAL), y)
+	CFLAGS += -DNDEBUG -O3
+	CFLAGS += -Wpedantic -Wextra -Wmaybe-uninitialized
+	CFLAGS += -W -Wformat=2 -Wpointer-arith -Wbad-function-cast
+	CFLAGS += -Wstrict-prototypes -Wmissing-prototypes -Winline
+	CFLAGS += -Wdisabled-optimization -Wfloat-equal -Wall
+else
+	CFLAGS += -g3 -DDEBUG
+	ifeq ($(ASAN), y)
+		CFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
+		LDLIBS += -fsanitize=address
+	endif
+endif
+
+.PHONY: all debug clean
 all: $(PROGS)
 
 debug:
 	@echo "*** Debug info:"
 	@echo "Source-files:" $(SRCS)
 	@echo "Object-files:" $(OBJS)
+	@echo "Compiler-flags:" $(CFLAGS)
 
-# Production flags:
-# CFLAGS += -Wextra -Wmaybe-uninitialized -O3
-
-# Development flags:
-CFLAGS += -g -O0 -DDEV
-
-# Standard target:
 $(PROGS): $(OBJS)
-	$(CC) $^ $(LDLIBS) -o $@
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 clean:
 	$(RM) $(PROGS) $(OBJS)

@@ -2,8 +2,10 @@
  * https://en.cppreference.com/w/cpp/header
  */
 #include <iostream>
+#include <cstdio>
 #include <iomanip>
 #include <string>
+#include <cstring>
 #include <array>
 #include <vector>
 #include <map>
@@ -20,10 +22,13 @@ using namespace std;
 int
 main(int argc, char *argv[])
 {
+  (void)argc;
+  (void)argv;
+
   cout << endl << "Hello World" << endl;
   cout << __FILE__ << ":" << __LINE__ << endl;
 
-#ifdef DEV
+#ifdef DEBUG
   cout << endl << "*** Development build" << endl;
   cout << "Build: " << __DATE__ << " " << __TIME__ << endl;
 #endif
