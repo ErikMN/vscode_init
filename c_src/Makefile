@@ -10,7 +10,7 @@ endif
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
-CFLAGS += -Werror
+CFLAGS += -Werror -std=c99
 
 ifeq ($(FINAL), y)
 	CFLAGS += -DNDEBUG -O3
