@@ -12,6 +12,8 @@ SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 CFLAGS += -Werror -std=c99
 
+# FINAL=y
+
 ifeq ($(FINAL), y)
 	CFLAGS += -DNDEBUG -O3
 	CFLAGS += -Wpedantic -Wextra -Wmaybe-uninitialized

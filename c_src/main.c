@@ -12,6 +12,15 @@
 #include <assert.h>
 #include <stdint.h>
 
+#ifdef DEBUG
+#define DEBUG_PRINT(...) printf(__VA_ARGS__)
+#else
+#define DEBUG_PRINT(...)
+#endif
+
+#define ARRAY_SIZE(x) \
+  ((sizeof(x) / sizeof(0 [x])) / ((size_t)(!(sizeof(x) % sizeof(0 [x])))))
+
 int
 main(int argc, char *argv[])
 {
@@ -21,10 +30,8 @@ main(int argc, char *argv[])
   printf("\nHello World!\n");
   printf("%s:%d\n", __FILE__, __LINE__);
 
-#ifdef DEBUG
-  printf("\n*** Development build\n");
-  printf("Build: %s %s\n", __DATE__, __TIME__);
-#endif
+  DEBUG_PRINT("\n*** Development build\n");
+  DEBUG_PRINT("Build: %s %s\n", __DATE__, __TIME__);
 
   return EXIT_SUCCESS;
 }
