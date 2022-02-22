@@ -13,13 +13,16 @@
 #include <stdint.h>
 
 #ifdef DEBUG
-#define DEBUG_PRINT(...) printf(__VA_ARGS__)
+#define DBUG(x) x
 #else
-#define DEBUG_PRINT(...)
+#define DBUG(x)
 #endif
 
-#define ARRAY_SIZE(x) \
-  ((sizeof(x) / sizeof(0 [x])) / ((size_t)(!(sizeof(x) % sizeof(0 [x])))))
+#define print_debug(...) DBUG(printf(__VA_ARGS__))
+
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof(0 [x]))
+#endif
 
 int
 main(int argc, char *argv[])
@@ -30,8 +33,8 @@ main(int argc, char *argv[])
   printf("\nHello World!\n");
   printf("%s:%d\n", __FILE__, __LINE__);
 
-  DEBUG_PRINT("\n*** Development build\n");
-  DEBUG_PRINT("Build: %s %s\n", __DATE__, __TIME__);
+  print_debug("\n*** Development build\n");
+  print_debug("Build: %s %s\n", __DATE__, __TIME__);
 
   return EXIT_SUCCESS;
 }
