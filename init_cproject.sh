@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 if [ $# -eq 0 ]; then
   APP=my_app
@@ -7,7 +8,17 @@ else
 fi
 
 BASEDIR=$(dirname "$0")
+DIR=$(dirname "${APP}")
+APP=$(basename "${APP}")
+PWD=$(pwd)
+# echo "$DIR"
 # echo "$BASEDIR"
+# echo "$PWD"
+
+if [ -d $DIR/$APP ]; then
+  echo "*** Error: '$APP' already exists... exit"
+  return
+fi
 
 SUPPORTED="2.28.0"
 GIT_VERSION=$(git --version | cut -d' ' -f3)
@@ -25,13 +36,14 @@ GIT_INIT_REPO() {
 echo "*** Initializing C project '$APP' in this folder"
 echo
 
-# Create a C project with vscode tasks in the current directory:
-mkdir -p $APP && cp -r $BASEDIR/c_src/. ./$APP/ && mkdir -p ./$APP/.vscode &&
-cp $BASEDIR/vscode/*.json ./$APP/.vscode/ &&
-sed -i.bak "s/xxxxxxxxx/$APP/g" ./$APP/Makefile ./$APP/.gitignore &&
-cd ./$APP/ && rm *.bak .*.bak &&
-GIT_INIT_REPO && cd ..
-code ./$APP &&
+# Create a C project with vscode tasks in the provided directory:
+mkdir $DIR/$APP && cp -r $BASEDIR/c_src/. $DIR/$APP/ && mkdir -p $DIR/$APP/.vscode &&
+cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
+sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
+cd $DIR/$APP/ && rm *.bak .*.bak &&
+GIT_INIT_REPO
+
+code $PWD
 
 echo &&
 echo "*** Done."
