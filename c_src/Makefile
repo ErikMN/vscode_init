@@ -15,7 +15,8 @@ CFLAGS += -Werror -std=c99
 # FINAL=y
 
 ifeq ($(FINAL), y)
-	CFLAGS += -DNDEBUG -O3
+	LDFLAGS += -s
+	CFLAGS += -DNDEBUG -g0 -O2
 	CFLAGS += -Wpedantic -Wextra -Wmaybe-uninitialized
 	CFLAGS += -W -Wformat=2 -Wpointer-arith -Wbad-function-cast
 	CFLAGS += -Wstrict-prototypes -Wmissing-prototypes -Winline

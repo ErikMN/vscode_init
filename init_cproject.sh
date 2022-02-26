@@ -37,7 +37,7 @@ echo "*** Initializing C project '$APP' in this folder"
 echo
 
 # Create a C project with vscode tasks in the provided directory:
-mkdir $DIR/$APP && cp -r $BASEDIR/c_src/. $DIR/$APP/ && mkdir -p $DIR/$APP/.vscode &&
+mkdir -p $DIR/$APP && cp -r $BASEDIR/c_src/. $DIR/$APP/ && mkdir -p $DIR/$APP/.vscode &&
 cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
 sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
 cd $DIR/$APP/ && rm *.bak .*.bak &&
