@@ -35,15 +35,22 @@ GIT_INIT_REPO() {
   git add -A && git commit -m 'Initial commit'
 }
 
-echo "*** Initializing C project '$APP' in this folder"
-echo
-
 # Create a C project with vscode tasks in the provided directory:
-mkdir -p $DIR/$APP && cp -r $BASEDIR/c_src/. $DIR/$APP/ && mkdir -p $DIR/$APP/.vscode &&
-cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
-sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
-cd $DIR/$APP/ && rm *.bak .*.bak &&
-GIT_INIT_REPO
+SETUP_PROJECT() {
+  echo "*** Initializing C project '$APP' in this folder"
+  echo
+
+  mkdir -p $DIR/$APP &&
+  cp -r $BASEDIR/c_src/. $DIR/$APP/ &&
+  mkdir -p $DIR/$APP/.vscode &&
+  cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
+  sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
+  cd $DIR/$APP/ &&
+  rm *.bak .*.bak &&
+  GIT_INIT_REPO
+}
+
+SETUP_PROJECT
 
 # Start Visual Studio Code if it is installed:
 if eval $VSCODE; then
@@ -52,5 +59,5 @@ else
   echo "*** Visual Studio Code is not installed"
 fi
 
-echo &&
+echo
 echo "*** Done."
