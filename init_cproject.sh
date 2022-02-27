@@ -7,6 +7,8 @@ else
   APP=$1
 fi
 
+VSCODE="command -v code >/dev/null 2>&1"
+
 BASEDIR=$(dirname "$0")
 DIR=$(dirname "${APP}")
 APP=$(basename "${APP}")
@@ -43,7 +45,12 @@ sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
 cd $DIR/$APP/ && rm *.bak .*.bak &&
 GIT_INIT_REPO
 
-code $PWD
+# Start Visual Studio Code if it is installed:
+if eval $VSCODE; then
+  code $PWD
+else
+  echo "*** Visual Studio Code is not installed"
+fi
 
 echo &&
 echo "*** Done."
