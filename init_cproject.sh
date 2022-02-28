@@ -7,6 +7,7 @@ else
   APP=$1
 fi
 
+TEMPLATE=c_src
 VSCODE="command -v code >/dev/null 2>&1"
 
 BASEDIR=$(dirname "$0")
@@ -28,9 +29,9 @@ GIT_VERSION=$(git --version | cut -d' ' -f3)
 # Initialize a git repo with an inital commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
   if (( $(echo "$GIT_VERSION $SUPPORTED" | awk '{print ($1 >= $2)}') )); then
-    git init -b main &&
+    git init -b main
   else
-    git init && git checkout -b main &&
+    git init && git checkout -b main
   fi
   git add -A && git commit -m 'Initial commit'
 }
@@ -41,7 +42,7 @@ SETUP_PROJECT() {
   echo
 
   mkdir -p $DIR/$APP &&
-  cp -r $BASEDIR/c_src/. $DIR/$APP/ &&
+  cp -r $BASEDIR/$TEMPLATE/. $DIR/$APP/ &&
   mkdir -p $DIR/$APP/.vscode &&
   cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
   sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
@@ -50,14 +51,17 @@ SETUP_PROJECT() {
   GIT_INIT_REPO
 }
 
-SETUP_PROJECT
-
 # Start Visual Studio Code if it is installed:
-if eval $VSCODE; then
-  code $PWD
-else
-  echo "*** Visual Studio Code is not installed"
-fi
+START_VSCODE() {
+  if eval $VSCODE; then
+    code $PWD
+  else
+    echo "*** Visual Studio Code is not installed"
+  fi
+}
+
+SETUP_PROJECT
+START_VSCODE
 
 echo
 echo "*** Done."
