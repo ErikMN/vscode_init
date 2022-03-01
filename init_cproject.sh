@@ -7,8 +7,17 @@ else
   APP=$1
 fi
 
-PROJECT=C
-TEMPLATE=c_src
+# Set TEMPLATE=cpp to use the C++ template:
+if [[ -z "${TEMPLATE}" ]]; then
+  PROJECT_TO_USE=C
+  TEMPLATE_DIR=c_src
+else
+  if [ "$TEMPLATE" = cpp ]; then
+    PROJECT_TO_USE=C++
+    TEMPLATE_DIR=cpp_src
+  fi
+fi
+
 VSCODE="command -v code >/dev/null 2>&1"
 
 BASEDIR=$(dirname "$0")
@@ -39,11 +48,11 @@ GIT_INIT_REPO() {
 
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
-  echo "*** Initializing $PROJECT project '$APP' in this folder"
+  echo "*** Initializing $PROJECT_TO_USE project '$APP' in this folder"
   echo
 
   mkdir -p $DIR/$APP &&
-  cp -r $BASEDIR/$TEMPLATE/. $DIR/$APP/ &&
+  cp -r $BASEDIR/$TEMPLATE_DIR/. $DIR/$APP/ &&
   mkdir -p $DIR/$APP/.vscode &&
   cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
   sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&

@@ -8,6 +8,8 @@ Clone this project into your HOME directory.
 * Visual Studio Code
 * git
 * gcc, gdb, Make
+* clang-format (optional)
+* valgrind (optional)
 
 ## C Project creation
 
