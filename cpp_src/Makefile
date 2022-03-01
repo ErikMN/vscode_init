@@ -12,8 +12,11 @@ SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
 CPPFLAGS += -Werror
 
+# FINAL=y
+
 ifeq ($(FINAL), y)
-	CPPFLAGS += -DNDEBUG -O3
+	LDFLAGS += -s
+	CFLAGS += -DNDEBUG -g0 -O2
 	CPPFLAGS += -Wpedantic -Wextra -Wmaybe-uninitialized
 	CPPFLAGS += -W -Wformat=2 -Wpointer-arith -Winline
 	CPPFLAGS += -Wdisabled-optimization -Wfloat-equal -Wall
