@@ -7,6 +7,7 @@ else
   APP=$1
 fi
 
+PROJECT=C
 TEMPLATE=c_src
 VSCODE="command -v code >/dev/null 2>&1"
 
@@ -38,7 +39,7 @@ GIT_INIT_REPO() {
 
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
-  echo "*** Initializing C project '$APP' in this folder"
+  echo "*** Initializing $PROJECT project '$APP' in this folder"
   echo
 
   mkdir -p $DIR/$APP &&
