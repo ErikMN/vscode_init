@@ -8,11 +8,11 @@ else
 fi
 
 # Set TEMPLATE=cpp to use the C++ template:
-if [[ -z "${TEMPLATE}" ]]; then
+if [[ -z ${TEMPLATE} ]]; then
   PROJECT_TO_USE=C
   TEMPLATE_DIR=c_src
 else
-  if [ "$TEMPLATE" = cpp ]; then
+  if [ $TEMPLATE = cpp ]; then
     PROJECT_TO_USE=C++
     TEMPLATE_DIR=cpp_src
   fi
@@ -20,13 +20,10 @@ fi
 
 VSCODE="command -v code >/dev/null 2>&1"
 
-BASEDIR=$(dirname "$0")
-DIR=$(dirname "${APP}")
-APP=$(basename "${APP}")
+BASEDIR=$(dirname $0)
+DIR=$(dirname ${APP})
+APP=$(basename ${APP})
 PWD=$(pwd)
-# echo "$DIR"
-# echo "$BASEDIR"
-# echo "$PWD"
 
 if [ -d $DIR/$APP ]; then
   echo "*** Error: '$APP' already exists... exit"
@@ -38,7 +35,7 @@ GIT_VERSION=$(git --version | cut -d' ' -f3)
 
 # Initialize a git repo with an inital commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
-  if (( $(echo "$GIT_VERSION $SUPPORTED" | awk '{print ($1 >= $2)}') )); then
+  if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
     git init -b main
   else
     git init && git checkout -b main

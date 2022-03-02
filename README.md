@@ -1,6 +1,6 @@
 # VSCODE INIT
 
-Automate creation of projects with VSCODE \
+Automate creation of C/C++ projects with VSCODE \
 Clone this project into your HOME directory.
 
 ## Requirements
