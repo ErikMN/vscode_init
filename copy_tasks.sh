@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-BASEDIR=$(dirname "$0")
-# echo "$BASEDIR"
+BASEDIR=$(dirname $0)
 
 echo '*** Copying VSCode tasks to this folder'
 
