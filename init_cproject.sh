@@ -34,6 +34,11 @@ fi
 SUPPORTED="2.28.0"
 GIT_VERSION=$(git --version | cut -d' ' -f3)
 
+# Silence git:
+q_git() {
+  git "$@" >/dev/null
+}
+
 # Initialize a git repo with an inital commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
   if ! eval $GIT; then
@@ -42,17 +47,16 @@ GIT_INIT_REPO() {
   fi
 
   if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
-    git init -b main
+    q_git init -b main
   else
-    git init && git checkout -b main
+    q_git init && q_git checkout -b main
   fi
-  git add -A && git commit -m 'Initial commit'
+  q_git add -A && q_git commit -m "Initial commit"
 }
 
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
   echo "*** Initializing $PROJECT_TO_USE project '$APP' in this folder"
-  echo
 
   mkdir -p $DIR/$APP &&
   cp -r $BASEDIR/$TEMPLATE_DIR/. $DIR/$APP/ &&
@@ -77,5 +81,4 @@ START_VSCODE() {
 SETUP_PROJECT
 START_VSCODE
 
-echo
 echo "*** Done."
