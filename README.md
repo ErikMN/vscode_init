@@ -1,6 +1,7 @@
 # VSCODE INIT
 
 Automate creation of C/C++ projects with VSCODE \
+This automation tool is mainly targetet Linux and MacOS users. \
 Clone this project into your HOME directory.
 
 ## Requirements
@@ -11,32 +12,29 @@ Clone this project into your HOME directory.
 * clang-format (optional)
 * valgrind (optional)
 
-## C Project creation
+## C/C++ for Visual Studio Code
 
 Install the C/C++ for Visual Studio Code plugin
 <https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools>
 
-## Building for ARM
+## How to run the scripts
 
-Install the GCC, G++ cross compilers and support programs by typing:
+After this repo has been cloned to your HOME directory, the following commands
+can be used to create C/C++ projects.
 
-```sh
-sudo apt-get install libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-gnueabi libncurses5-dev build-essential bison flex libssl-dev bc
-```
-
-Install GCC for ARM:
+To create a C project in the directory /tmp/test1 run:
 
 ```sh
-sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+~/vscode_init/init_cproject.sh /tmp/test1
 ```
 
-In Makefile
+To create a C++ project in the directory /tmp/test1 run:
 
 ```sh
-CC = arm-linux-gnueabihf-gcc
+~/vscode_init/init_cpp_project.sh /tmp/test1
 ```
 
-## Shell profile alias
+## Recommended shell profile alias
 
 Add to ~/.zshrc (or your shell config of choice)
 
@@ -67,3 +65,36 @@ copy-vsctasks
 ```
 
 in an existing project to copy VScode tasks to that directory.
+
+## Building my project
+
+To build your newly created project run:
+
+```sh
+make
+```
+
+in the root directory of the project. To build a production suitable binary run:
+
+```sh
+FINAL=y make
+```
+## Building for ARM (Debian/Ubuntu)
+
+Install the GCC, G++ cross compilers and support programs by typing:
+
+```sh
+sudo apt-get install libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-gnueabi libncurses5-dev build-essential bison flex libssl-dev bc
+```
+
+Install GCC for ARM:
+
+```sh
+sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+```
+
+In Makefile
+
+```sh
+CC = arm-linux-gnueabihf-gcc
+```
