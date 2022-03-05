@@ -19,6 +19,7 @@ else
 fi
 
 VSCODE="command -v code >/dev/null 2>&1"
+GIT="command -v git >/dev/null 2>&1"
 
 BASEDIR=$(dirname $0)
 DIR=$(dirname ${APP})
@@ -35,6 +36,11 @@ GIT_VERSION=$(git --version | cut -d' ' -f3)
 
 # Initialize a git repo with an inital commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
+  if ! eval $GIT; then
+    echo "*** Git is not installed"
+    return
+  fi
+
   if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
     git init -b main
   else
@@ -67,6 +73,7 @@ START_VSCODE() {
   fi
 }
 
+# Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
 
