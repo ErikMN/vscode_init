@@ -15,6 +15,9 @@ else
   if [ $TEMPLATE = cpp ]; then
     PROJECT_TO_USE=C++
     TEMPLATE_DIR=cpp_src
+  elif [ $TEMPLATE = sharedlib ]; then
+    PROJECT_TO_USE="shared library C"
+    TEMPLATE_DIR=c_shared_lib
   fi
 fi
 

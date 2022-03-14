@@ -50,6 +50,10 @@ alias create-c-app="source $HOME/vscode_init/init_cproject.sh"
 alias create-cpp-app="source $HOME/vscode_init/init_cpp_project.sh"
 ```
 
+```sh
+alias create-shared-lib-c-app="source $HOME/vscode_init/init_shared_lib_cproject.sh"
+```
+
 In a directory of choice then run:
 
 ```sh
