@@ -1,6 +1,6 @@
 CC = g++
 PROGS = xxxxxxxxx
-LDFLAGS = -lm
+LDLIBS = -lm
 
 # PKGS += mylib
 ifdef PKGS
@@ -38,7 +38,7 @@ debug:
 	@echo "Compiler-flags:" $(CPPFLAGS)
 
 $(PROGS): $(OBJS)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CC) $^ $(LDLIBS) -o $@ $(LDFLAGS)
 
 clean:
 	$(RM) $(PROGS) $(OBJS)

@@ -15,6 +15,7 @@
 #include <limits.h>
 #include <assert.h>
 #include <stdint.h>
+#include <math.h>
 
 void hello_my_lib(const char *str);
 

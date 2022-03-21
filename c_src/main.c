@@ -12,6 +12,7 @@
 #include <limits.h>
 #include <assert.h>
 #include <stdint.h>
+#include <math.h>
 
 #ifdef DEBUG
 #define DBUG(x) x
