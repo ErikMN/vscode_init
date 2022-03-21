@@ -1,10 +1,11 @@
 CC = gcc
 PROGS = xxxxxxxxx
-LDFLAGS = -lm
+LDLIBS += -lm -l$(PROGS)
 
 # PKGS += mylib
 ifdef PKGS
 	LDLIBS += $(shell pkg-config --libs $(PKGS))
+	LIB_LDLIBS += $(shell pkg-config --libs $(PKGS))
 	CFLAGS += $(shell pkg-config --cflags $(PKGS))
 endif
 
@@ -16,7 +17,8 @@ LIB_DIR = my_lib
 LIB_TARGET = $(LIB_DIR)/lib$(PROGS).so
 LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 LIB_OBJ = $(LIB_SRCS:.c=.o)
-LIB_LDFLAGS = -lm -shared
+LIB_LDLIBS += -lm
+LIB_LDFLAGS = -shared
 
 LIB_PATH = $(shell pwd)/$(LIB_DIR)
 LDFLAGS += -L$(LIB_PATH)
@@ -49,12 +51,14 @@ debug:
 	@echo "Linker-libs:" $(LDLIBS)
 	@echo "Lib-src:" $(LIB_SRCS)
 	@echo "Lib-objs:" $(LIB_OBJ)
+	@echo "Lib-linker-flags:" $(LIB_LDFLAGS)
+	@echo "Lib-linker-libs:" $(LIB_LDLIBS)
 
 $(LIB_TARGET): $(LIB_OBJ)
-	$(CC) -fPIC $(LIB_LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CC) -fPIC $^ $(LIB_LDLIBS) -o $@ $(LIB_LDFLAGS)
 
 $(PROGS): $(OBJS) $(LIB_TARGET)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@ -l$(PROGS)
+	$(CC) $^ $(LDLIBS) -o $@ $(LDFLAGS)
 
 run: $(PROGS)
 	@LD_LIBRARY_PATH=$(LIB_PATH) ./$(PROGS)
