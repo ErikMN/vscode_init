@@ -13,7 +13,6 @@ OBJS = $(SRCS:.c=.o)
 CFLAGS += -Werror -std=c99
 
 # FINAL=y
-
 ifeq ($(FINAL), y)
 	LDFLAGS += -s
 	CFLAGS += -DNDEBUG -g0 -O2
@@ -29,7 +28,7 @@ else
 	endif
 endif
 
-.PHONY: all debug clean
+.PHONY: all debug run clean
 all: $(PROGS)
 
 debug:
@@ -40,6 +39,9 @@ debug:
 
 $(PROGS): $(OBJS)
 	$(CC) $^ $(LDLIBS) -o $@ $(LDFLAGS)
+
+run: $(PROGS)
+	@./$(PROGS)
 
 clean:
 	$(RM) $(PROGS) $(OBJS)

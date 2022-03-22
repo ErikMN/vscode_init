@@ -1,16 +1,18 @@
 # VSCODE INIT
 
-Automate creation of C/C++ projects with VSCODE \
+Automate creation of C/C++ projects with Visual Studio Code \
 This automation tool is mainly targetet Linux and MacOS users. \
-Clone this project into your HOME directory.
+Clone this project into your HOME directory (or any directory really).
 
 ## Requirements
 
-* Visual Studio Code
-* git
+* [Visual Studio Code](https://code.visualstudio.com/)
+* [C/C++ for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (VSCode plugin)
+* [git](https://git-scm.com/)
 * gcc, gdb, Make
 * clang-format (optional)
-* valgrind (optional)
+* [Valgrind](https://valgrind.org/) (optional)
+* [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) (optional)
 
 ## C/C++ for Visual Studio Code
 
@@ -78,11 +80,13 @@ To build your newly created project run:
 make
 ```
 
-in the root directory of the project. To build a production suitable binary run:
+in the root directory of the project. \
+To build a production suitable binary run:
 
 ```sh
 FINAL=y make
 ```
+
 ## Building for ARM (Debian/Ubuntu)
 
 Install the GCC, G++ cross compilers and support programs by typing:

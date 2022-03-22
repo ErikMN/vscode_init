@@ -36,10 +36,11 @@ else
 	ifeq ($(ASAN), y)
 		CFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
 		LDLIBS += -fsanitize=address
+		LIB_LDLIBS += -fsanitize=address
 	endif
 endif
 
-.PHONY: all debug clean run $(LIB_TARGET) $(PROGS)
+.PHONY: all debug clean run
 all: $(LIB_TARGET) $(PROGS)
 
 debug:
