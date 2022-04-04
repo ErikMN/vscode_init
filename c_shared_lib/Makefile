@@ -56,10 +56,10 @@ debug:
 	@echo "Lib-linker-libs:" $(LIB_LDLIBS)
 
 $(LIB_TARGET): $(LIB_OBJ)
-	$(CC) -fPIC $^ $(LIB_LDLIBS) -o $@ $(LIB_LDFLAGS)
+	$(CC) -fPIC $(LIB_LDFLAGS) $^ $(LIB_LDLIBS) -o $@
 
 $(PROGS): $(OBJS) $(LIB_TARGET)
-	$(CC) $^ $(LDLIBS) -o $@ $(LDFLAGS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 run: $(PROGS)
 	@LD_LIBRARY_PATH=$(LIB_PATH) ./$(PROGS)

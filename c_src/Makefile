@@ -38,7 +38,7 @@ debug:
 	@echo "Compiler-flags:" $(CFLAGS)
 
 $(PROGS): $(OBJS)
-	$(CC) $^ $(LDLIBS) -o $@ $(LDFLAGS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 run: $(PROGS)
 	@./$(PROGS)
