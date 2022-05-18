@@ -20,6 +20,7 @@ ifeq ($(FINAL), y)
 	CPPFLAGS += -W -Wformat=2 -Wpointer-arith -Winline
 	CPPFLAGS += -Wdisabled-optimization -Wfloat-equal -Wall
 else
+	# ASAN=y
 	CPPFLAGS += -g3 -DDEBUG
 	ifeq ($(ASAN), y)
 		CPPFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
@@ -27,7 +28,7 @@ else
 	endif
 endif
 
-.PHONY: all debug run clean
+.PHONY: all debug run cppcheck indent clean
 all: $(PROGS)
 
 debug:
@@ -41,6 +42,16 @@ $(PROGS): $(OBJS)
 
 run: $(PROGS)
 	@./$(PROGS)
+
+cppcheck:
+	@echo "*** Static code analysis"
+	@find . -name "*.[ch]" | xargs cppcheck \
+		--error-exitcode=1 --verbose --enable=all --suppress=missingIncludeSystem
+
+indent:
+	@echo "*** Formatting code"
+	@find . -name "*.[ch]" | xargs clang-format \
+		-style=file -i -fallback-style=none
 
 clean:
 	$(RM) $(PROGS) $(OBJS)

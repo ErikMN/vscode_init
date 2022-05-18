@@ -11,7 +11,8 @@ endif
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
-CFLAGS += -Werror -std=c99
+CFLAGS += -Werror
+# CFLAGS += -std=c99
 
 LIB_DIR = my_lib
 LIB_TARGET = $(LIB_DIR)/lib$(PROGS).so
@@ -32,6 +33,7 @@ ifeq ($(FINAL), y)
 	CFLAGS += -Wstrict-prototypes -Wmissing-prototypes -Winline
 	CFLAGS += -Wdisabled-optimization -Wfloat-equal -Wall
 else
+	# ASAN=y
 	CFLAGS += -g3 -DDEBUG
 	ifeq ($(ASAN), y)
 		CFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
@@ -40,7 +42,7 @@ else
 	endif
 endif
 
-.PHONY: all debug clean run
+.PHONY: all debug run cppcheck indent clean
 all: $(LIB_TARGET) $(PROGS)
 
 debug:
@@ -63,6 +65,16 @@ $(PROGS): $(OBJS) $(LIB_TARGET)
 
 run: $(PROGS)
 	@LD_LIBRARY_PATH=$(LIB_PATH) ./$(PROGS)
+
+cppcheck:
+	@echo "*** Static code analysis"
+	@find . -name "*.[ch]" | xargs cppcheck \
+		--error-exitcode=1 --verbose --enable=all --suppress=missingIncludeSystem
+
+indent:
+	@echo "*** Formatting code"
+	@find . -name "*.[ch]" | xargs clang-format \
+		-style=file -i -fallback-style=none
 
 clean:
 	$(RM) $(PROGS) $(OBJS) $(LIB_TARGET) $(LIB_OBJ)
