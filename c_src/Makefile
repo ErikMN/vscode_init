@@ -47,12 +47,15 @@ run: $(PROGS)
 
 cppcheck:
 	@echo "*** Static code analysis"
-	@find . -name "*.[ch]" | xargs cppcheck \
-		--error-exitcode=1 --verbose --enable=all --suppress=missingIncludeSystem
+	@cppcheck $(shell find . -name "*.[ch]") \
+		--verbose --enable=all -DDEBUG=1 \
+		--suppress=missingIncludeSystem \
+		--suppress=unknownMacro \
+		--suppress=unusedFunction
 
 indent:
 	@echo "*** Formatting code"
-	@find . -name "*.[ch]" | xargs clang-format \
+	@clang-format $(shell find . -name "*.[ch]") \
 		-style=file -i -fallback-style=none
 
 clean:
