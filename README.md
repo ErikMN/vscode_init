@@ -38,7 +38,8 @@ To create a C++ project in the directory /tmp/test1 run:
 
 ## Recommended shell profile alias
 
-Add to ~/.zshrc (or your shell config of choice)
+Add to ~/.zshrc (or your shell config of choice) \
+These aliases can be added automatically by running ```append_alias.sh```
 
 ```sh
 alias copy-vsctasks="source $HOME/vscode_init/copy_tasks.sh"
