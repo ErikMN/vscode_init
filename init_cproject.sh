@@ -5,6 +5,7 @@ if [ $# -eq 0 ]; then
   APP=my_app
 else
   APP=$1
+  FLAG=$2
 fi
 
 # Set TEMPLATE=cpp to use the C++ template:
@@ -74,9 +75,14 @@ SETUP_PROJECT() {
 # Start Visual Studio Code if it is installed:
 START_VSCODE() {
   if eval $VSCODE; then
+    echo "*** Starting Visual Studio Code"
     code $PWD
   else
     echo "*** Visual Studio Code is not installed"
+  fi
+  # Go back to where the script was called:
+  if [ "$FLAG" != "-cwd" ]; then
+    cd - > /dev/null
   fi
 }
 
