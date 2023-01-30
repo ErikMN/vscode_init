@@ -11,6 +11,7 @@ endif
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 CFLAGS += -Werror
+# CFLAGS += -Wvla
 # CFLAGS += -std=c99
 
 # FINAL=y
