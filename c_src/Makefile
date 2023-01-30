@@ -38,6 +38,7 @@ debug:
 	@echo "Source-files:" $(SRCS)
 	@echo "Object-files:" $(OBJS)
 	@echo "Compiler-flags:" $(CFLAGS)
+	@echo "Linker-flags:" $(LDLIBS)
 
 $(PROGS): $(OBJS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
