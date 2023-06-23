@@ -5,10 +5,10 @@ BASEDIR=$(pwd)
 SHELLCONF=""
 
 # Aliases to be written to shell config:
-ALIAS1="alias copy-vsctasks=\"source $BASEDIR/copy_tasks.sh\""
-ALIAS2="alias create-c-app=\"source $BASEDIR/init_cproject.sh\""
-ALIAS3="alias create-cpp-app=\"source $BASEDIR/init_cpp_project.sh\""
-ALIAS4="alias create-shared-lib-c-app=\"source $BASEDIR/init_shared_lib_cproject.sh\""
+ALIAS1="alias copy-vsctasks=\"$BASEDIR/copy_tasks.sh\""
+ALIAS2="alias create-c-app=\"$BASEDIR/init_cproject.sh\""
+ALIAS3="alias create-cpp-app=\"$BASEDIR/init_cpp_project.sh\""
+ALIAS4="alias create-shared-lib-c-app=\"$BASEDIR/init_shared_lib_cproject.sh\""
 
 # Set shell configuration to use:
 if [ "$DEFAULT_SHELL" = "zsh" ]; then

@@ -42,19 +42,19 @@ Add to ~/.zshrc (or your shell config of choice) \
 These aliases can be added automatically by running ```append_alias.sh```
 
 ```sh
-alias copy-vsctasks="source $HOME/vscode_init/copy_tasks.sh"
+alias copy-vsctasks="$HOME/vscode_init/copy_tasks.sh"
 ```
 
 ```sh
-alias create-c-app="source $HOME/vscode_init/init_cproject.sh"
+alias create-c-app="$HOME/vscode_init/init_cproject.sh"
 ```
 
 ```sh
-alias create-cpp-app="source $HOME/vscode_init/init_cpp_project.sh"
+alias create-cpp-app="$HOME/vscode_init/init_cpp_project.sh"
 ```
 
 ```sh
-alias create-shared-lib-c-app="source $HOME/vscode_init/init_shared_lib_cproject.sh"
+alias create-shared-lib-c-app="$HOME/vscode_init/init_shared_lib_cproject.sh"
 ```
 
 In a directory of choice then run:

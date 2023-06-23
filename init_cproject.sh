@@ -13,10 +13,10 @@ if [[ -z ${TEMPLATE} ]]; then
   PROJECT_TO_USE=C
   TEMPLATE_DIR=c_src
 else
-  if [ $TEMPLATE = cpp ]; then
+  if [ "$TEMPLATE" = cpp ]; then
     PROJECT_TO_USE=C++
     TEMPLATE_DIR=cpp_src
-  elif [ $TEMPLATE = sharedlib ]; then
+  elif [ "$TEMPLATE" = sharedlib ]; then
     PROJECT_TO_USE="shared library C"
     TEMPLATE_DIR=c_shared_lib
   fi
@@ -25,14 +25,14 @@ fi
 VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
 
-BASEDIR=$(dirname $0)
-DIR=$(dirname ${APP})
-APP=$(basename ${APP})
+BASEDIR=$(dirname "$0")
+DIR=$(dirname "${APP}")
+APP=$(basename "${APP}")
 PWD=$(pwd)
 
-if [ -d $DIR/$APP ]; then
+if [ -d "$DIR/$APP" ]; then
   echo "*** Error: '$APP' already exists... exit"
-  return
+  exit 1
 fi
 
 SUPPORTED="2.28.0"
@@ -43,11 +43,11 @@ q_git() {
   git "$@" >/dev/null
 }
 
-# Initialize a git repo with an inital commit (git < 2.28.0 does not support 'git init -b <name>'):
+# Initialize a git repo with an initial commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
-  if ! eval $GIT; then
+  if ! $GIT; then
     echo "*** Git is not installed"
-    return
+    return 1
   fi
 
   if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
@@ -62,21 +62,21 @@ GIT_INIT_REPO() {
 SETUP_PROJECT() {
   echo "*** Initializing $PROJECT_TO_USE project '$APP' in this folder"
 
-  mkdir -p $DIR/$APP &&
-  cp -r $BASEDIR/$TEMPLATE_DIR/. $DIR/$APP/ &&
-  mkdir -p $DIR/$APP/.vscode &&
-  cp $BASEDIR/vscode/*.json $DIR/$APP/.vscode/ &&
-  sed -i.bak "s/xxxxxxxxx/$APP/g" $DIR/$APP/Makefile $DIR/$APP/.gitignore &&
-  cd $DIR/$APP/ &&
+  mkdir -p "$DIR/$APP" &&
+  cp -r "$BASEDIR/$TEMPLATE_DIR/." "$DIR/$APP/" &&
+  mkdir -p "$DIR/$APP/.vscode" &&
+  cp "$BASEDIR/vscode/"*.json "$DIR/$APP/.vscode/" &&
+  sed -i.bak "s/xxxxxxxxx/$APP/g" "$DIR/$APP/Makefile" "$DIR/$APP/.gitignore" &&
+  cd "$DIR/$APP/" &&
   rm *.bak .*.bak &&
   GIT_INIT_REPO
 }
 
 # Start Visual Studio Code if it is installed:
 START_VSCODE() {
-  if eval $VSCODE; then
+  if $VSCODE; then
     echo "*** Starting Visual Studio Code"
-    code $PWD
+    code "$PWD"
   else
     echo "*** Visual Studio Code is not installed"
   fi
