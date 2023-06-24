@@ -5,7 +5,6 @@ if [ $# -eq 0 ]; then
   APP=my_app
 else
   APP=$1
-  FLAG=$2
 fi
 
 # Set TEMPLATE=cpp to use the C++ template:
@@ -28,7 +27,6 @@ GIT="command -v git >/dev/null 2>&1"
 BASEDIR=$(dirname "$0")
 DIR=$(dirname "${APP}")
 APP=$(basename "${APP}")
-PWD=$(pwd)
 
 if [ -d "$DIR/$APP" ]; then
   echo "*** Error: '$APP' already exists... exit"
@@ -45,7 +43,7 @@ q_git() {
 
 # Initialize a git repo with an initial commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
-  if ! $GIT; then
+  if ! $GIT > /dev/null; then
     echo "*** Git is not installed"
     return 1
   fi
@@ -72,19 +70,15 @@ SETUP_PROJECT() {
 
 # Start Visual Studio Code if it is installed:
 START_VSCODE() {
-  if $VSCODE; then
+  if $VSCODE > /dev/null; then
     echo "*** Starting Visual Studio Code"
-    code "$PWD"
+    code "$DIR/$APP"
   else
     echo "*** Visual Studio Code is not installed"
-  fi
-  # Go back to where the script was called:
-  if [ "$FLAG" != "-cwd" ]; then
-    cd - > /dev/null
   fi
 }
 
 # Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
-echo "*** Done."
+echo "*** Project created in:" "$DIR/$APP"
