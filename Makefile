@@ -6,10 +6,14 @@ SCRIPTS = \
 
 VS_CODE_INIT_DIR := /usr/local/vscode_init
 
+# HACK: to make it work on both GNU and BSD sed:
 POST_INSTALL_SCRIPT = \
-	sed -i 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-cpp-app"; \
-	sed -i 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-shared-lib-c-app"; \
-	sed -i 's/BASEDIR=$$(dirname "$$0")/BASEDIR=\/usr\/local/' "$(SCRIPTS_DIR)/create-c-app"
+	sed -i'.orig' -e 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-cpp-app"; \
+	rm -f "$(SCRIPTS_DIR)/create-cpp-app.orig"; \
+	sed -i'.orig' -e 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-shared-lib-c-app"; \
+	rm -f "$(SCRIPTS_DIR)/create-shared-lib-c-app.orig"; \
+	sed -i'.orig' -e 's/BASEDIR=$$(dirname "$$0")/BASEDIR=\/usr\/local/' "$(SCRIPTS_DIR)/create-c-app"; \
+	rm -f "$(SCRIPTS_DIR)/create-c-app.orig"
 
 .PHONY: install uninstall help
 
