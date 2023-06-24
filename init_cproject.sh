@@ -49,7 +49,6 @@ GIT_INIT_REPO() {
     echo "*** Git is not installed"
     return 1
   fi
-
   if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
     q_git init -b main
   else
@@ -61,11 +60,10 @@ GIT_INIT_REPO() {
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
   echo "*** Initializing $PROJECT_TO_USE project '$APP' in this folder"
-
   mkdir -p "$DIR/$APP" &&
-  cp -r "$BASEDIR/$TEMPLATE_DIR/." "$DIR/$APP/" &&
+  cp -r "$BASEDIR/vscode_init/$TEMPLATE_DIR/." "$DIR/$APP/" &&
   mkdir -p "$DIR/$APP/.vscode" &&
-  cp "$BASEDIR/vscode/"*.json "$DIR/$APP/.vscode/" &&
+  cp "$BASEDIR/vscode_init/vscode/"*.json "$DIR/$APP/.vscode/" &&
   sed -i.bak "s/xxxxxxxxx/$APP/g" "$DIR/$APP/Makefile" "$DIR/$APP/.gitignore" &&
   cd "$DIR/$APP/" &&
   rm *.bak .*.bak &&
@@ -89,5 +87,4 @@ START_VSCODE() {
 # Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
-
 echo "*** Done."
