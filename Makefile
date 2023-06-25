@@ -1,10 +1,11 @@
-SCRIPTS_DIR := /usr/local/bin
+INSTALL_DIR := /usr/local
+SCRIPTS_DIR := $(INSTALL_DIR)/bin
 SCRIPTS = \
 	init_cproject.sh:create-c-app \
 	init_cpp_project.sh:create-cpp-app \
 	init_shared_lib_cproject.sh:create-shared-lib-c-app
 
-VS_CODE_INIT_DIR := /usr/local/vscode_init
+VS_CODE_INIT_DIR := $(INSTALL_DIR)/vscode_init
 
 # HACK: to make it work on both GNU and BSD sed:
 POST_INSTALL_SCRIPT = \
@@ -12,10 +13,10 @@ POST_INSTALL_SCRIPT = \
 	rm -f "$(SCRIPTS_DIR)/create-cpp-app.orig"; \
 	sed -i'.orig' -e 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-shared-lib-c-app"; \
 	rm -f "$(SCRIPTS_DIR)/create-shared-lib-c-app.orig"; \
-	sed -i'.orig' -e 's/BASEDIR=$$(dirname "$$0")/BASEDIR=\/usr\/local/' "$(SCRIPTS_DIR)/create-c-app"; \
+	sed -i'.orig' -e 's|BASEDIR=$$(dirname "$$0")|BASEDIR=$(INSTALL_DIR)|' "$(SCRIPTS_DIR)/create-c-app"; \
 	rm -f "$(SCRIPTS_DIR)/create-c-app.orig"
 
-.PHONY: install uninstall help
+.PHONY: install uninstall help create-scripts-dirs
 
 help:
 	@echo "Usage: make [target]"
@@ -25,15 +26,18 @@ help:
 	@echo "  uninstall   Remove the installed scripts and vscode_init folder"
 	@echo "  help        Show this help message"
 
-install: uninstall
+create-scripts-dirs:
+	@mkdir -p "$(SCRIPTS_DIR)"
+
+install: create-scripts-dirs
 	@for script in $(SCRIPTS); do \
 		src=$${script%%:*}; \
 		dest=$${script#*:}; \
 		echo "Installing $$src as $(SCRIPTS_DIR)/$$dest"; \
 		cp "$$src" "$(SCRIPTS_DIR)/$$dest"; \
 	done
-	@echo "Installing vscode_init folder to $(VS_CODE_INIT_DIR)"; \
-	cp -rn vscode_init "$(VS_CODE_INIT_DIR)"; \
+	@echo "Installing vscode_init folder to $(INSTALL_DIR)"; \
+	cp -rn vscode_init "$(INSTALL_DIR)"; \
 	$(POST_INSTALL_SCRIPT)
 
 uninstall:

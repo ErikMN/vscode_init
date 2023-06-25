@@ -36,7 +36,21 @@ To create a C++ project in the directory /tmp/test1 run:
 ~/vscode_init/init_cpp_project.sh /tmp/test1
 ```
 
-## Recommended shell profile alias
+## Install the scripts
+
+To install the script run:
+
+```sh
+make install
+```
+
+to uninstall them run:
+
+```sh
+make uninstall
+```
+
+## Optional shell profile alias
 
 Add to ~/.zshrc (or your shell config of choice) \
 These aliases can be added automatically by running ```append_alias.sh```
