@@ -37,7 +37,7 @@ install: create-scripts-dirs
 		cp "$$src" "$(SCRIPTS_DIR)/$$dest"; \
 	done
 	@echo "Installing vscode_init folder to $(INSTALL_DIR)"; \
-	cp -rn vscode_init "$(INSTALL_DIR)"; \
+	cp -r vscode_init "$(INSTALL_DIR)"; \
 	$(POST_INSTALL_SCRIPT)
 
 uninstall:
