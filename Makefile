@@ -16,7 +16,8 @@ POST_INSTALL_SCRIPT = \
 	sed -i'.orig' -e 's|BASEDIR=$$(dirname "$$0")|BASEDIR=$(INSTALL_DIR)|' "$(SCRIPTS_DIR)/create-c-app"; \
 	rm -f "$(SCRIPTS_DIR)/create-c-app.orig"
 
-.PHONY: install uninstall help create-scripts-dirs
+.DEFAULT_GOAL := help
+.PHONY: install uninstall help
 
 help:
 	@echo "Usage: make [target]"
@@ -26,10 +27,8 @@ help:
 	@echo "  uninstall   Remove the installed scripts and vscode_init folder"
 	@echo "  help        Show this help message"
 
-create-scripts-dirs:
+install:
 	@mkdir -p "$(SCRIPTS_DIR)"
-
-install: create-scripts-dirs
 	@for script in $(SCRIPTS); do \
 		src=$${script%%:*}; \
 		dest=$${script#*:}; \
@@ -48,5 +47,3 @@ uninstall:
 	done
 	@echo "Removing $(VS_CODE_INIT_DIR)"; \
 	rm -rf "$(VS_CODE_INIT_DIR)"
-
-.DEFAULT_GOAL := help
