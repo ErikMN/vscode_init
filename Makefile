@@ -36,7 +36,8 @@ install:
 		echo "Installing $$src as $(SCRIPTS_DIR)/$$dest"; \
 		cp "$$src" "$(SCRIPTS_DIR)/$$dest"; \
 	done
-	@echo "Installing vscode_init folder to $(SHARE_DIR)"; \
+	@echo "Installing vscode_init folder to $(VS_CODE_INIT_DIR)"; \
+	mkdir -p $(VS_CODE_INIT_DIR)
 	cp -r vscode_init "$(SHARE_DIR)"; \
 	$(POST_INSTALL_SCRIPT)
 
