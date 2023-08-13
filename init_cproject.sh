@@ -25,11 +25,11 @@ VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
 
 BASEDIR=$(dirname "$0")
-DIR=$(dirname "${APP}")
+DIR=$(realpath "$APP")
 APP=$(basename "${APP}")
 
-if [ -d "$DIR/$APP" ]; then
-  echo "*** Error: '$APP' already exists... exit"
+if [ -d "$DIR" ]; then
+  echo "*** Error: '$DIR' already exists... exit"
   exit 1
 fi
 
@@ -58,12 +58,12 @@ GIT_INIT_REPO() {
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
   echo "*** Initializing $PROJECT_TO_USE project '$APP' in this folder"
-  mkdir -p "$DIR/$APP" &&
-  cp -r "$BASEDIR/vscode_init/$TEMPLATE_DIR/." "$DIR/$APP/" &&
-  mkdir -p "$DIR/$APP/.vscode" &&
-  cp "$BASEDIR/vscode_init/vscode/"*.json "$DIR/$APP/.vscode/" &&
-  sed -i.bak "s/xxxxxxxxx/$APP/g" "$DIR/$APP/Makefile" "$DIR/$APP/.gitignore" &&
-  cd "$DIR/$APP/" &&
+  mkdir -p "$DIR" &&
+  cp -r "$BASEDIR/vscode_init/$TEMPLATE_DIR/." "$DIR/" &&
+  mkdir -p "$DIR/.vscode" &&
+  cp "$BASEDIR/vscode_init/vscode/"*.json "$DIR/.vscode/" &&
+  sed -i.bak "s/xxxxxxxxx/$APP/g" "$DIR/Makefile" "$DIR/.gitignore" &&
+  cd "$DIR/" &&
   rm *.bak .*.bak &&
   GIT_INIT_REPO
 }
@@ -72,7 +72,7 @@ SETUP_PROJECT() {
 START_VSCODE() {
   if $VSCODE > /dev/null; then
     echo "*** Starting Visual Studio Code"
-    code "$DIR/$APP"
+    code "$DIR"
   else
     echo "*** Visual Studio Code is not installed"
   fi
@@ -81,4 +81,4 @@ START_VSCODE() {
 # Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
-echo "*** Project created in:" "$DIR/$APP"
+echo "*** Project created in:" "$DIR"
