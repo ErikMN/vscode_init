@@ -27,13 +27,13 @@ can be used to create C/C++ projects.
 To create a C project in the directory /tmp/test1 run:
 
 ```sh
-~/vscode_init/init_cproject.sh /tmp/test1
+~/vscode_init/bin/create-c-app /tmp/test1
 ```
 
 To create a C++ project in the directory /tmp/test1 run:
 
 ```sh
-~/vscode_init/init_cpp_project.sh /tmp/test1
+~/vscode_init/bin/create-cpp-app /tmp/test1
 ```
 
 ## Install the scripts
@@ -60,15 +60,15 @@ alias copy-vsctasks="$HOME/vscode_init/copy_tasks.sh"
 ```
 
 ```sh
-alias create-c-app="$HOME/vscode_init/init_cproject.sh"
+alias create-c-app="$HOME/vscode_init/bin/create-c-app"
 ```
 
 ```sh
-alias create-cpp-app="$HOME/vscode_init/init_cpp_project.sh"
+alias create-cpp-app="$HOME/vscode_init/bin/create-cpp-app"
 ```
 
 ```sh
-alias create-shared-lib-c-app="$HOME/vscode_init/init_shared_lib_cproject.sh"
+alias create-shared-lib-c-app="$HOME/vscode_init/bin/create-shared-lib-c-app"
 ```
 
 In a directory of choice then run:
@@ -100,24 +100,4 @@ To build a production suitable binary run:
 
 ```sh
 FINAL=y make
-```
-
-## Building for ARM (Debian/Ubuntu)
-
-Install the GCC, G++ cross compilers and support programs by typing:
-
-```sh
-sudo apt-get install libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-gnueabi libncurses5-dev build-essential bison flex libssl-dev bc
-```
-
-Install GCC for ARM:
-
-```sh
-sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
-```
-
-In Makefile
-
-```sh
-CC = arm-linux-gnueabihf-gcc
 ```

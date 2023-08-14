@@ -1,21 +1,10 @@
 INSTALL_DIR := /usr/local
-SHARE_DIR := $(INSTALL_DIR)/share
-SCRIPTS_DIR := $(INSTALL_DIR)/bin
-SCRIPTS = \
-	init_cproject.sh:create-c-app \
-	init_cpp_project.sh:create-cpp-app \
-	init_shared_lib_cproject.sh:create-shared-lib-c-app
 
-VS_CODE_INIT_DIR := $(SHARE_DIR)/vscode_init
+SCRIPTS_INST_DIR := $(INSTALL_DIR)/bin
+VS_CODE_INIT_INST_DIR := $(INSTALL_DIR)/share/vscode_init
 
-# HACK: to make it work on both GNU and BSD sed:
-POST_INSTALL_SCRIPT = \
-	sed -i'.orig' -e 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-cpp-app"; \
-	rm -f "$(SCRIPTS_DIR)/create-cpp-app.orig"; \
-	sed -i'.orig' -e 's/init_cproject.sh/create-c-app/g' "$(SCRIPTS_DIR)/create-shared-lib-c-app"; \
-	rm -f "$(SCRIPTS_DIR)/create-shared-lib-c-app.orig"; \
-	sed -i'.orig' -e 's|BASEDIR=$$(dirname "$$0")|BASEDIR=$(SHARE_DIR)|' "$(SCRIPTS_DIR)/create-c-app"; \
-	rm -f "$(SCRIPTS_DIR)/create-c-app.orig"
+SCRIPTS := $(wildcard bin/*)
+VSCODE_INIT := $(wildcard share/vscode_init/*)
 
 .DEFAULT_GOAL := help
 .PHONY: install uninstall help
@@ -29,23 +18,19 @@ help:
 	@echo "  help        Show this help message"
 
 install:
-	@mkdir -p "$(SCRIPTS_DIR)"
+	@mkdir -p "$(SCRIPTS_INST_DIR)"
 	@for script in $(SCRIPTS); do \
-		src=$${script%%:*}; \
-		dest=$${script#*:}; \
-		echo "Installing $$src as $(SCRIPTS_DIR)/$$dest"; \
-		cp "$$src" "$(SCRIPTS_DIR)/$$dest"; \
+		echo "Installing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
+		cp "$$script" "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 	done
-	@echo "Installing vscode_init folder to $(VS_CODE_INIT_DIR)"; \
-	mkdir -p $(VS_CODE_INIT_DIR)
-	cp -r vscode_init "$(SHARE_DIR)"; \
-	$(POST_INSTALL_SCRIPT)
+	@echo "Installing $(VS_CODE_INIT_INST_DIR)"; \
+	mkdir -p "$(VS_CODE_INIT_INST_DIR)"; \
+	cp -r $(VSCODE_INIT) "$(VS_CODE_INIT_INST_DIR)"
 
 uninstall:
 	@for script in $(SCRIPTS); do \
-		dest=$${script#*:}; \
-		echo "Removing $(SCRIPTS_DIR)/$$dest"; \
-		rm -f "$(SCRIPTS_DIR)/$$dest"; \
+		echo "Removing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
+		rm -f "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 	done
-	@echo "Removing $(VS_CODE_INIT_DIR)"; \
-	rm -rf "$(VS_CODE_INIT_DIR)"
+	@echo "Removing $(VS_CODE_INIT_INST_DIR)"; \
+	rm -rf "$(VS_CODE_INIT_INST_DIR)"

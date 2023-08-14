@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+DEBUG=false
+
 if [ $# -eq 0 ]; then
   APP=my_app
 else
@@ -24,12 +26,21 @@ fi
 VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
 
-BASEDIR=$(dirname "$0")
-DIR=$(realpath "$APP")
 APP=$(basename "${APP}")
+PROJECT_DIR=$(realpath "$APP")
+BASEDIR=$(dirname "$0")
+VSCODE_INIT_DIR="$BASEDIR/../share/vscode_init"
 
-if [ -d "$DIR" ]; then
-  echo "*** Error: '$DIR' already exists... exit"
+if [ "$DEBUG" = true ]; then
+  printf "APP:                %s\n" "$APP"
+  printf "PROJECT_DIR:        %s\n" "$PROJECT_DIR"
+  printf "BASEDIR:            %s\n" "$BASEDIR"
+  printf "VSCODE_INIT_DIR:    %s\n" "$VSCODE_INIT_DIR"
+  printf "\n"
+fi
+
+if [ -d "$PROJECT_DIR" ]; then
+  echo "*** Error: '$PROJECT_DIR' already exists... exit"
   exit 1
 fi
 
@@ -58,12 +69,12 @@ GIT_INIT_REPO() {
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
   echo "*** Initializing $PROJECT_TO_USE project '$APP' in this folder"
-  mkdir -p "$DIR" &&
-  cp -r "$BASEDIR/vscode_init/$TEMPLATE_DIR/." "$DIR/" &&
-  mkdir -p "$DIR/.vscode" &&
-  cp "$BASEDIR/vscode_init/vscode/"*.json "$DIR/.vscode/" &&
-  sed -i.bak "s/xxxxxxxxx/$APP/g" "$DIR/Makefile" "$DIR/.gitignore" &&
-  cd "$DIR/" &&
+  mkdir -p "$PROJECT_DIR" &&
+  cp -r "$VSCODE_INIT_DIR/$TEMPLATE_DIR/." "$PROJECT_DIR/" &&
+  mkdir -p "$PROJECT_DIR/.vscode" &&
+  cp "$VSCODE_INIT_DIR/vscode/"*.json "$PROJECT_DIR/.vscode/" &&
+  sed -i.bak "s/xxxxxxxxx/$APP/g" "$PROJECT_DIR/Makefile" "$PROJECT_DIR/.gitignore" &&
+  cd "$PROJECT_DIR/" &&
   rm *.bak .*.bak &&
   GIT_INIT_REPO
 }
@@ -72,7 +83,7 @@ SETUP_PROJECT() {
 START_VSCODE() {
   if $VSCODE > /dev/null; then
     echo "*** Starting Visual Studio Code"
-    code "$DIR"
+    code "$PROJECT_DIR"
   else
     echo "*** Visual Studio Code is not installed"
   fi
@@ -81,4 +92,4 @@ START_VSCODE() {
 # Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
-echo "*** Project created in:" "$DIR"
+echo "*** Project created in:" "$PROJECT_DIR"
