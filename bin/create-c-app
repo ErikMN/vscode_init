@@ -25,9 +25,19 @@ fi
 
 VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
+OS=$(uname)
+
+realpath_macos() {
+  [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+if [ "$OS" = "Darwin" ]; then
+  PROJECT_DIR=$(realpath_macos "$APP")
+else
+  PROJECT_DIR=$(realpath "$APP")
+fi
 
 APP=$(basename "${APP}")
-PROJECT_DIR=$(realpath "$APP")
 BASEDIR=$(dirname "$0")
 VSCODE_INIT_DIR="$BASEDIR/../share/vscode_init"
 
