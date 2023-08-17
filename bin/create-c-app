@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -eu
 
 DEBUG=false
 
@@ -13,6 +13,7 @@ fi
 # Default template:
 PROJECT_DESCRIPTION=C
 TEMPLATE_DIR=c_src
+TEMPLATE=
 
 # Set template from env:
 if [ "$TEMPLATE" = cpp ]; then
