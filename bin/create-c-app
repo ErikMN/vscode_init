@@ -25,16 +25,16 @@ fi
 
 # Default template:
 PROJECT_DESCRIPTION=C
-TEMPLATE_DIR=c_src
-TEMPLATE=
+TEMPLATE_DIR=tpl_c_make
+TEMPLATE="${TEMPLATE:-}"
 
 # Set template from env:
 if [ "$TEMPLATE" = cpp ]; then
   PROJECT_DESCRIPTION=C++
-  TEMPLATE_DIR=cpp_src
+  TEMPLATE_DIR=tpl_cpp_make
 elif [ "$TEMPLATE" = sharedlib ]; then
   PROJECT_DESCRIPTION="shared library C"
-  TEMPLATE_DIR=c_shared_lib
+  TEMPLATE_DIR=tpl_c_lib_make
 fi
 
 VSCODE="command -v code >/dev/null 2>&1"
@@ -56,10 +56,12 @@ BASEDIR=$(dirname "$0")
 VSCODE_INIT_DIR="$BASEDIR/../share/vscode_init"
 
 if [ "$DEBUG" = true ]; then
-  printf "APP:                %s\n" "$APP"
-  printf "PROJECT_DIR:        %s\n" "$PROJECT_DIR"
-  printf "BASEDIR:            %s\n" "$BASEDIR"
-  printf "VSCODE_INIT_DIR:    %s\n" "$VSCODE_INIT_DIR"
+  printf "APP:                  %s\n" "$APP"
+  printf "PROJECT_DIR:          %s\n" "$PROJECT_DIR"
+  printf "BASEDIR:              %s\n" "$BASEDIR"
+  printf "VSCODE_INIT_DIR:      %s\n" "$VSCODE_INIT_DIR"
+  printf "TEMPLATE_DIR:         %s\n" "$TEMPLATE_DIR"
+  printf "PROJECT_DESCRIPTION:  %s\n" "$PROJECT_DESCRIPTION"
   printf "\n"
 fi
 
