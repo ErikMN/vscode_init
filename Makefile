@@ -23,7 +23,7 @@ update:
 	@git pull --rebase --autostash
 
 .PHONY: install
-install:
+install: uninstall
 	@mkdir -p "$(SCRIPTS_INST_DIR)"
 	@for script in $(SCRIPTS); do \
 		echo "Installing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
