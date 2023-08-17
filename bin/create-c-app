@@ -3,8 +3,21 @@ set -eu
 
 DEBUG=false
 
+# Print colors:
+FMT_RED=$(printf '\033[31m')
+FMT_GREEN=$(printf '\033[32m')
+FMT_BLUE=$(printf '\033[34m')
+FMT_YELLOW=$(printf '\033[33m')
+FMT_WHITE=$(printf '\033[37m')
+FMT_BOLD=$(printf '\033[1m')
+FMT_RESET=$(printf '\033[0m')
+
 if [ $# -eq 0 ]; then
-  echo "Usage: $(basename $0) <project-name>"
+  echo "Please specify the project directory:"
+  echo "${FMT_BLUE}  $(basename $0) ${FMT_GREEN}<project-directory>${FMT_RESET}"
+  echo
+  echo "For example:"
+  echo "${FMT_BLUE}  $(basename $0) ${FMT_GREEN}my-app${FMT_RESET}"
   exit 0
 else
   APP=$1
@@ -51,7 +64,7 @@ if [ "$DEBUG" = true ]; then
 fi
 
 if [ -d "$PROJECT_DIR" ]; then
-  echo "*** Error: '$PROJECT_DIR' already exists... exit"
+  echo "${FMT_RED}*** Error: '$PROJECT_DIR' already exists... exit${FMT_RESET}"
   exit 1
 fi
 
@@ -66,7 +79,7 @@ q_git() {
 # Initialize a git repo with an initial commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
   if ! $GIT > /dev/null; then
-    echo "*** Git is not installed: skipping setup repo"
+    echo "${FMT_RED}*** Git is not installed: skipping setup repo${FMT_RESET}"
     return
   fi
   if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
@@ -79,7 +92,7 @@ GIT_INIT_REPO() {
 
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
-  echo "*** Initializing $PROJECT_DESCRIPTION project '$APP' in this folder"
+  echo "${FMT_BOLD}*** Initializing $PROJECT_DESCRIPTION project '$APP' in $(dirname "$PROJECT_DIR")${FMT_RESET}"
   mkdir -p "$PROJECT_DIR" &&
   cp -r "$VSCODE_INIT_DIR/$TEMPLATE_DIR/." "$PROJECT_DIR/" &&
   mkdir -p "$PROJECT_DIR/.vscode" &&
@@ -93,14 +106,14 @@ SETUP_PROJECT() {
 # Start Visual Studio Code if it is installed:
 START_VSCODE() {
   if $VSCODE > /dev/null; then
-    echo "*** Starting Visual Studio Code"
+    echo "${FMT_BLUE}*** Starting Visual Studio Code${FMT_RESET}"
     code "$PROJECT_DIR"
   else
-    echo "*** Visual Studio Code is not installed"
+    echo "${FMT_RED}*** Visual Studio Code is not installed${FMT_RESET}"
   fi
 }
 
 # Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
-echo "*** Project created in:" "$PROJECT_DIR"
+echo "${FMT_BOLD}${FMT_GREEN}*** Project created in:" ${FMT_WHITE}"$PROJECT_DIR${FMT_RESET}"
