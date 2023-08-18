@@ -90,11 +90,11 @@ GIT_INIT_REPO() {
     return
   fi
   if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
-    q_cmd git init -b main
+    q_cmd git -C "$PROJECT_DIR" init -b main
   else
-    q_cmd git init && q_cmd git checkout -b main
+    q_cmd git -C "$PROJECT_DIR" init && q_cmd git -C "$PROJECT_DIR" checkout -b main
   fi
-  q_cmd git add -A && q_cmd git commit -m "Initial commit"
+  q_cmd git -C "$PROJECT_DIR" add -A && q_cmd git -C "$PROJECT_DIR" commit -m "Initial commit"
 }
 
 # Create a C project with vscode tasks in the provided directory:
@@ -105,8 +105,7 @@ SETUP_PROJECT() {
   mkdir -p "$PROJECT_DIR/.vscode" &&
   cp "$VSCODE_INIT_DIR/vscode/"*.json "$PROJECT_DIR/.vscode/" &&
   sed -i.bak "s/xxxxxxxxx/$APP/g" "$PROJECT_DIR/Makefile" "$PROJECT_DIR/.gitignore" &&
-  cd "$PROJECT_DIR/" &&
-  rm *.bak .*.bak &&
+  rm "$PROJECT_DIR"/*.bak "$PROJECT_DIR"/.*.bak &&
   GIT_INIT_REPO
 }
 
