@@ -1,0 +1,6 @@
+xxxxxxxxx
+build
+builddir
+.history
+*.exe
+*.o

@@ -35,6 +35,9 @@ if [ "$TEMPLATE" = cpp ]; then
 elif [ "$TEMPLATE" = sharedlib ]; then
   PROJECT_DESCRIPTION="shared library C"
   TEMPLATE_DIR=tpl_c_lib_make
+elif [ "$TEMPLATE" = cmeson ]; then
+  PROJECT_DESCRIPTION="C meson"
+  TEMPLATE_DIR=tpl_c_meson
 fi
 
 VSCODE="command -v code >/dev/null 2>&1"
@@ -97,6 +100,12 @@ GIT_INIT_REPO() {
   q_cmd git -C "$PROJECT_DIR" add -A && q_cmd git -C "$PROJECT_DIR" commit -m "Initial commit"
 }
 
+# Set project name in template files:
+UPDATE_PROJECT_FILES() {
+  find "$PROJECT_DIR" -type f -exec sed -i.bak "s/xxxxxxxxx/$APP/g" {} + &&
+  rm "$PROJECT_DIR"/*.bak "$PROJECT_DIR"/.*.bak
+}
+
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
   echo "${FMT_BOLD}*** Initializing $PROJECT_DESCRIPTION project '$APP' in $(dirname "$PROJECT_DIR")${FMT_RESET}"
@@ -104,8 +113,7 @@ SETUP_PROJECT() {
   cp -r "$VSCODE_INIT_DIR/$TEMPLATE_DIR/." "$PROJECT_DIR/" &&
   mkdir -p "$PROJECT_DIR/.vscode" &&
   cp "$VSCODE_INIT_DIR/vscode/"*.json "$PROJECT_DIR/.vscode/" &&
-  sed -i.bak "s/xxxxxxxxx/$APP/g" "$PROJECT_DIR/Makefile" "$PROJECT_DIR/.gitignore" &&
-  rm "$PROJECT_DIR"/*.bak "$PROJECT_DIR"/.*.bak &&
+  UPDATE_PROJECT_FILES &&
   GIT_INIT_REPO
 }
 
