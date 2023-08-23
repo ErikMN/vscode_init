@@ -71,6 +71,10 @@ alias create-cpp-app="$HOME/vscode_init/bin/create-cpp-app"
 alias create-shared-lib-c-app="$HOME/vscode_init/bin/create-shared-lib-c-app"
 ```
 
+```sh
+alias create-c-meson-app="$HOME/vscode_init/bin/create-c-meson-app"
+```
+
 In a directory of choice then run:
 
 ```sh

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 
 DEFAULT_SHELL=$(basename $SHELL)
 BASEDIR=$(pwd)
@@ -9,6 +10,7 @@ ALIAS1="alias copy-vsctasks=\"$BASEDIR/copy_tasks.sh\""
 ALIAS2="alias create-c-app=\"$BASEDIR/bin/create-c-app\""
 ALIAS3="alias create-cpp-app=\"$BASEDIR/bin/create-cpp-app\""
 ALIAS4="alias create-shared-lib-c-app=\"$BASEDIR/bin/create-shared-lib-c-app\""
+ALIAS5="alias create-c-meson-app=\"$BASEDIR/bin/create-c-meson-app\""
 
 # Set shell configuration to use:
 if [ "$DEFAULT_SHELL" = "zsh" ]; then
@@ -33,4 +35,5 @@ echo $ALIAS1 >> $SHELLCONF
 echo $ALIAS2 >> $SHELLCONF
 echo $ALIAS3 >> $SHELLCONF
 echo $ALIAS4 >> $SHELLCONF
+echo $ALIAS5 >> $SHELLCONF
 echo "*** Please reload your shell: source $SHELLCONF"

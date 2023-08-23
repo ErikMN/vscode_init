@@ -2,4 +2,5 @@
 
 echo "*** Copying VSCode tasks to this folder"
 BASEDIR=$(dirname $0)
-mkdir -p .vscode && cp $BASEDIR/share/vscode_init/vscode/*.json ./.vscode/
+VSCODE_TPL="tpl_vscode_make"
+mkdir -p .vscode && cp $BASEDIR/share/vscode_init/$VSCODE_TPL/*.json ./.vscode/
