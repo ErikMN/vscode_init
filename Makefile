@@ -15,12 +15,17 @@ help:
 	@echo "Targets:"
 	@echo "  install     Install the scripts and vscode_init folder to $(INSTALL_DIR)"
 	@echo "  uninstall   Remove the installed scripts and vscode_init folder"
+	@echo "  append      Append aliases to shell profile for local install"
 	@echo "  update      Update the repo (git required)"
 	@echo "  help        Show this help message"
 
 .PHONY: update
 update:
 	@git pull --rebase --autostash
+
+.PHONY: append
+append:
+	@./utils/append_alias.sh
 
 .PHONY: install
 install: uninstall
