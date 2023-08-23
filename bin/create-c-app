@@ -27,7 +27,7 @@ fi
 PROJECT_DESCRIPTION=C
 TEMPLATE_DIR=tpl_c_make
 TEMPLATE="${TEMPLATE:-}"
-VSCODE_TPL="vscode"
+VSCODE_TPL="tpl_vscode_make"
 
 # Set template from env:
 if [ "$TEMPLATE" = cpp ]; then
@@ -39,6 +39,7 @@ elif [ "$TEMPLATE" = sharedlib ]; then
 elif [ "$TEMPLATE" = cmeson ]; then
   PROJECT_DESCRIPTION="C meson"
   TEMPLATE_DIR=tpl_c_meson
+  VSCODE_TPL="tpl_vscode_meson"
 fi
 
 VSCODE="command -v code >/dev/null 2>&1"

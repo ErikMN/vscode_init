@@ -7,7 +7,7 @@ project(
   meson_version : '>= 0.58.0',
   default_options : [ 'warning_level=1', # 3
                       'werror=false',
-                      'buildtype=debugoptimized' ]) # debugoptimized
+                      'buildtype=debug' ]) # debugoptimized
 
 # The compiler:
 cc = meson.get_compiler('c')
