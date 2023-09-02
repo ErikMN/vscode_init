@@ -13,6 +13,7 @@ FMT_WHITE=$(printf '\033[37m')
 FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
+# Check input arguments:
 if [ $# -eq 0 ]; then
   echo "Please specify the project directory:"
   echo "${FMT_BLUE}  $(basename $0) ${FMT_GREEN}<project-directory>${FMT_RESET}"
@@ -45,12 +46,15 @@ fi
 
 VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
+GIT_VERSION=$(git --version | cut -d' ' -f3)
+GIT_SUPPORTED="2.28.0"
 OS=$(uname)
 
 realpath_macos() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
+# OS specifics:
 if [ "$OS" = "Darwin" ]; then
   PROJECT_DIR=$(realpath_macos "$APP")
 else
@@ -62,6 +66,7 @@ BASEDIR=$(dirname "$0")
 VSCODE_INIT_DIR="$BASEDIR/../share/vscode_init"
 
 if [ "$DEBUG" = true ]; then
+  printf "OS:                   %s\n" "$OS"
   printf "APP:                  %s\n" "$APP"
   printf "PROJECT_DIR:          %s\n" "$PROJECT_DIR"
   printf "BASEDIR:              %s\n" "$BASEDIR"
@@ -75,9 +80,6 @@ if [ -d "$PROJECT_DIR" ]; then
   echo "${FMT_RED}*** Error: '$PROJECT_DIR' already exists... exit${FMT_RESET}"
   exit 1
 fi
-
-SUPPORTED="2.28.0"
-GIT_VERSION=$(git --version | cut -d' ' -f3)
 
 # Silence a command:
 q_cmd() {
@@ -95,7 +97,7 @@ GIT_INIT_REPO() {
     echo "${FMT_RED}*** Git is not installed: skipping setup repo${FMT_RESET}"
     return
   fi
-  if (( $(echo $GIT_VERSION $SUPPORTED | awk '{print ($1 >= $2)}') )); then
+  if (( $(echo $GIT_VERSION $GIT_SUPPORTED | awk '{print ($1 >= $2)}') )); then
     q_cmd git -C "$PROJECT_DIR" init -b main
   else
     q_cmd git -C "$PROJECT_DIR" init && q_cmd git -C "$PROJECT_DIR" checkout -b main
