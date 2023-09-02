@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -eu
 
-DEBUG=false
+# Set DEBUG from env:
+DEBUG="${DEBUG:-false}"
 
 # Print colors:
 FMT_RED=$(printf '\033[31m')
