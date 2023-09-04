@@ -49,6 +49,8 @@ GIT="command -v git >/dev/null 2>&1"
 GIT_VERSION=$(git --version | cut -d' ' -f3)
 GIT_SUPPORTED="2.28.0"
 OS=$(uname)
+ARCH=$(uname -m)
+APPLE_ARM="0"
 
 realpath_macos() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
@@ -57,6 +59,10 @@ realpath_macos() {
 # OS specifics:
 if [ "$OS" = "Darwin" ]; then
   PROJECT_DIR=$(realpath_macos "$APP")
+  if [ "$ARCH" = "arm64" ]; then
+    echo "${FMT_YELLOW}*** Apple silicon detected${FMT_RESET}"
+    APPLE_ARM="1"
+  fi
 else
   PROJECT_DIR=$(realpath "$APP")
 fi
@@ -67,6 +73,7 @@ VSCODE_INIT_DIR="$BASEDIR/../share/vscode_init"
 
 if [ "$DEBUG" = true ]; then
   printf "OS:                   %s\n" "$OS"
+  printf "ARCH:                 %s\n" "$ARCH"
   printf "APP:                  %s\n" "$APP"
   printf "PROJECT_DIR:          %s\n" "$PROJECT_DIR"
   printf "BASEDIR:              %s\n" "$BASEDIR"
@@ -111,6 +118,17 @@ UPDATE_PROJECT_FILES() {
   find "$PROJECT_DIR" -type f -name "*.bak" -exec rm -f {} +
 }
 
+# Adjustments based on OS:
+CHECK_OS_SPECIFICS() {
+  if [ "$APPLE_ARM" = "1" ]; then
+    if [ "$TEMPLATE" = cmeson ]; then
+      cp "$VSCODE_INIT_DIR/macos/arm/meson/"*.json "$PROJECT_DIR/.vscode/"
+    else
+      cp "$VSCODE_INIT_DIR/macos/arm/make/"*.json "$PROJECT_DIR/.vscode/"
+    fi
+  fi
+}
+
 # Create a C project with vscode tasks in the provided directory:
 SETUP_PROJECT() {
   echo "${FMT_BOLD}*** Initializing $PROJECT_DESCRIPTION project '$APP' in $(dirname "$PROJECT_DIR")${FMT_RESET}"
@@ -119,6 +137,7 @@ SETUP_PROJECT() {
   mkdir -p "$PROJECT_DIR/.vscode" &&
   cp "$VSCODE_INIT_DIR/$VSCODE_TPL/"*.json "$PROJECT_DIR/.vscode/" &&
   UPDATE_PROJECT_FILES &&
+  CHECK_OS_SPECIFICS &&
   GIT_INIT_REPO
 }
 
