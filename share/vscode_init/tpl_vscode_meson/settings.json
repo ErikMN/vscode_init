@@ -1,0 +1,11 @@
+{
+  "terminal.integrated.profiles.linux": {
+    "zsh": {
+      "path": "zsh",
+      "args": [
+        "-c",
+        "echo '*** Hello Visual Studio Code project'; zsh"
+      ]
+    }
+  }
+}

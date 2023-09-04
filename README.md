@@ -38,7 +38,7 @@ To create a C++ project in the directory /tmp/test1 run:
 
 ## Install the scripts
 
-To install the script run:
+To install the script run (as root):
 
 ```sh
 make install
@@ -104,4 +104,23 @@ To build a production suitable binary run:
 
 ```sh
 FINAL=y make
+```
+
+## Custom project workspace settings
+
+Edit `settings.json` to add custom project workspace settings. \
+Example: source a script for zsh at terminal startup.
+
+```sh
+{
+  "terminal.integrated.profiles.linux": {
+    "zsh": {
+      "path": "zsh",
+      "args": [
+        "-c",
+        "source ${workspaceFolder}/my_script.sh; zsh"
+      ]
+    }
+  }
+}
 ```
