@@ -6,6 +6,14 @@
         "-c",
         "echo '*** Hello Linux Visual Studio Code project'; zsh"
       ]
+    },
+    "bash": {
+      "path": "bash",
+      "args": [
+        "-l",
+        "-c",
+        "echo '*** Hello Linux Visual Studio Code project'; bash"
+      ]
     }
   },
   "terminal.integrated.profiles.osx": {
@@ -14,6 +22,14 @@
       "args": [
         "-c",
         "echo '*** Hello macOS Visual Studio Code project'; zsh"
+      ]
+    },
+    "bash": {
+      "path": "bash",
+      "args": [
+        "-l",
+        "-c",
+        "echo '*** Hello macOS Visual Studio Code project'; bash"
       ]
     }
   }
