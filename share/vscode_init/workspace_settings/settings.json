@@ -4,7 +4,7 @@
       "path": "zsh",
       "args": [
         "-c",
-        "echo '*** Hello Linux Visual Studio Code project'; zsh"
+        "echo \"\\033[1;32m*** Hello Linux Visual Studio Code project\\033[0m\"; zsh"
       ]
     },
     "bash": {
@@ -12,7 +12,7 @@
       "args": [
         "-l",
         "-c",
-        "echo '*** Hello Linux Visual Studio Code project'; bash"
+        "echo -e \"\\033[1;34m*** Hello Linux Visual Studio Code project\\033[0m\"; bash"
       ]
     }
   },
@@ -21,7 +21,7 @@
       "path": "zsh",
       "args": [
         "-c",
-        "echo '*** Hello macOS Visual Studio Code project'; zsh"
+        "echo \"\\033[1;32m*** Hello macOS Visual Studio Code project\\033[0m\"; zsh"
       ]
     },
     "bash": {
@@ -29,7 +29,7 @@
       "args": [
         "-l",
         "-c",
-        "echo '*** Hello macOS Visual Studio Code project'; bash"
+        "echo -e \"\\033[1;34m*** Hello macOS Visual Studio Code project\\033[0m\"; bash"
       ]
     }
   }
