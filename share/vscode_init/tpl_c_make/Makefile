@@ -31,9 +31,10 @@ else
 	endif
 endif
 
-.PHONY: all debug run cppcheck indent clean
+.PHONY: all
 all: $(PROGS)
 
+.PHONY: debug
 debug:
 	@echo "*** Debug info:"
 	@echo "Source-files:" $(SRCS)
@@ -45,9 +46,11 @@ debug:
 $(PROGS): $(OBJS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
+.PHONY: run
 run: $(PROGS)
 	@./$(PROGS)
 
+.PHONY: cppcheck
 cppcheck:
 	@echo "*** Static code analysis"
 	@cppcheck $(shell find . -name "*.[ch]") \
@@ -56,10 +59,12 @@ cppcheck:
 		--suppress=unknownMacro \
 		--suppress=unusedFunction
 
+.PHONY: indent
 indent:
 	@echo "*** Formatting code"
 	@clang-format $(shell find . -name "*.[ch]") \
 		-style=file -i -fallback-style=none
 
+.PHONY: clean
 clean:
 	$(RM) $(PROGS) $(OBJS)

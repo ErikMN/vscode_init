@@ -12,6 +12,7 @@ endif
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 CFLAGS += -Werror
+# CFLAGS += -Wvla
 # CFLAGS += -std=c99
 
 LIB_DIR = my_lib
@@ -42,9 +43,10 @@ else
 	endif
 endif
 
-.PHONY: all debug run cppcheck indent clean
+.PHONY: all
 all: $(LIB_TARGET) $(PROGS)
 
+.PHONY: debug
 debug:
 	@echo "*** Debug info:"
 	@echo "Source-files:" $(SRCS)
@@ -63,9 +65,11 @@ $(LIB_TARGET): $(LIB_OBJ)
 $(PROGS): $(OBJS) $(LIB_TARGET)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
+.PHONY: run
 run: $(PROGS)
 	@LD_LIBRARY_PATH=$(LIB_PATH) ./$(PROGS)
 
+.PHONY: cppcheck
 cppcheck:
 	@echo "*** Static code analysis"
 	@cppcheck $(shell find . -name "*.[ch]") \
@@ -74,10 +78,12 @@ cppcheck:
 		--suppress=unknownMacro \
 		--suppress=unusedFunction
 
+.PHONY: indent
 indent:
 	@echo "*** Formatting code"
 	@clang-format $(shell find . -name "*.[ch]") \
 		-style=file -i -fallback-style=none
 
+.PHONY: clean
 clean:
 	$(RM) $(PROGS) $(OBJS) $(LIB_TARGET) $(LIB_OBJ)
