@@ -49,8 +49,8 @@ debug_cc_flags = common_flags + [
 
 # https://mesonbuild.com/Build-options.html
 if get_option('buildtype') == 'debug'
-  add_project_arguments('-fsanitize=address', language : 'c')
-  add_project_link_arguments('-fsanitize=address', language : 'c')
+  # add_project_arguments('-fsanitize=address', language : 'c')
+  # add_project_link_arguments('-fsanitize=address', language : 'c')
   add_project_arguments(cc.get_supported_arguments(debug_cc_flags), language: 'c')
 else
   add_project_arguments(cc.get_supported_arguments(final_cc_flags), language: 'c')

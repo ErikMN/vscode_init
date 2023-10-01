@@ -47,6 +47,16 @@ $(PROGS): $(OBJS)
 run: $(PROGS)
 	@./$(PROGS)
 
+.PHONY: valgrind
+valgrind: $(PROGS)
+	@valgrind \
+		--tool=memcheck \
+		--leak-check=yes \
+		--show-reachable=yes \
+		--num-callers=20 \
+		--track-fds=yes \
+		./$(PROGS)
+
 .PHONY: cppcheck
 cppcheck:
 	@echo "*** Static code analysis"

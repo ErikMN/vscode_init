@@ -17,6 +17,16 @@ meson: $(BUILD_ROOT)
 run: meson
 	@./$(BUILD_ROOT)/xxxxxxxxx
 
+.PHONY: valgrind
+valgrind: meson
+	@valgrind \
+		--tool=memcheck \
+		--leak-check=yes \
+		--show-reachable=yes \
+		--num-callers=20 \
+		--track-fds=yes \
+		./$(BUILD_ROOT)/xxxxxxxxx
+
 .PHONY: cppcheck
 cppcheck:
 	@echo "*** Static code analysis"
