@@ -13,6 +13,9 @@ FMT_WHITE=$(printf '\033[37m')
 FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
+################################################################################
+# Initialization section:
+
 # Check input arguments:
 if [ $# -eq 0 ]; then
   echo "Please specify the project directory:"
@@ -44,6 +47,7 @@ elif [ "$TEMPLATE" = cmeson ]; then
   VSCODE_TPL="tpl_vscode_meson"
 fi
 
+# Aoolication and OS parameters:
 VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
 GIT_VERSION=$(git --version | cut -d' ' -f3)
@@ -52,6 +56,7 @@ OS=$(uname)
 ARCH=$(uname -m)
 APPLE_ARM="0"
 
+# macOS does not use GNU realpath:
 realpath_macos() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
@@ -67,10 +72,12 @@ else
   PROJECT_DIR=$(realpath "$APP")
 fi
 
+# Project setup parameters:
 APP=$(basename "${APP}")
 BASEDIR=$(dirname "$0")
 VSCODE_INIT_DIR="$BASEDIR/../share/vscode_init"
 
+# Print all internal parameters if DEBUG env is set:
 if [ "$DEBUG" = true ]; then
   printf "OS:                   %s\n" "$OS"
   printf "ARCH:                 %s\n" "$ARCH"
@@ -83,10 +90,14 @@ if [ "$DEBUG" = true ]; then
   printf "\n"
 fi
 
+# Exit if a directory of the same name as the project exists:
 if [ -d "$PROJECT_DIR" ]; then
   echo "${FMT_RED}*** Error: '$PROJECT_DIR' already exists... exit${FMT_RESET}"
   exit 1
 fi
+
+################################################################################
+# Functions section:
 
 # Silence a command:
 q_cmd() {
@@ -151,6 +162,9 @@ START_VSCODE() {
     echo "${FMT_RED}*** Visual Studio Code is not installed${FMT_RESET}"
   fi
 }
+
+################################################################################
+# Application start section:
 
 # Execute setup functions:
 SETUP_PROJECT

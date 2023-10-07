@@ -66,7 +66,8 @@ make uninstall
 
 ## Optional shell profile alias
 
-Add to ```~/.zshrc``` (or your shell config of choice) \
+If you don't want to install the scripts, they can be run directly. \
+Add to ```~/.zshrc``` (or your shell config of choice). \
 These aliases can be added automatically by running ```append_alias.sh```
 
 ```sh
