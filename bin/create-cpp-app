@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-BASEDIR=$(dirname $0)
-TEMPLATE=cpp source $BASEDIR/create-c-app
+BASEDIR=$(dirname "$0")
+TEMPLATE=cpp source "$BASEDIR"/create-c-app

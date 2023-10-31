@@ -13,16 +13,16 @@ FMT_WHITE=$(printf '\033[37m')
 FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
-################################################################################
+#==============================================================================#
 # Initialization section:
 
 # Check input arguments:
 if [ $# -eq 0 ]; then
   echo "Please specify the project directory:"
-  echo "${FMT_BLUE}  $(basename $0) ${FMT_GREEN}<project-directory>${FMT_RESET}"
+  echo "${FMT_BLUE}  $(basename "$0") ${FMT_GREEN}<project-directory>${FMT_RESET}"
   echo
   echo "For example:"
-  echo "${FMT_BLUE}  $(basename $0) ${FMT_GREEN}my-app${FMT_RESET}"
+  echo "${FMT_BLUE}  $(basename "$0") ${FMT_GREEN}my-app${FMT_RESET}"
   exit 0
 else
   APP=$1
@@ -96,7 +96,7 @@ if [ -d "$PROJECT_DIR" ]; then
   exit 1
 fi
 
-################################################################################
+#==============================================================================#
 # Functions section:
 
 # Silence a command:
@@ -115,7 +115,7 @@ GIT_INIT_REPO() {
     echo "${FMT_RED}*** Git is not installed: skipping setup repo${FMT_RESET}"
     return
   fi
-  if (( $(echo $GIT_VERSION $GIT_SUPPORTED | awk '{print ($1 >= $2)}') )); then
+  if (( $(echo "$GIT_VERSION" $GIT_SUPPORTED | awk '{print ($1 >= $2)}') )); then
     q_cmd git -C "$PROJECT_DIR" init -b main
   else
     q_cmd git -C "$PROJECT_DIR" init && q_cmd git -C "$PROJECT_DIR" checkout -b main
@@ -163,10 +163,10 @@ START_VSCODE() {
   fi
 }
 
-################################################################################
+#==============================================================================#
 # Application start section:
 
 # Execute setup functions:
 SETUP_PROJECT
 START_VSCODE
-echo "${FMT_BOLD}${FMT_GREEN}*** Project created in:" ${FMT_WHITE}"$PROJECT_DIR${FMT_RESET}"
+echo "${FMT_BOLD}${FMT_GREEN}*** Project created in:" "${FMT_WHITE}""$PROJECT_DIR${FMT_RESET}"

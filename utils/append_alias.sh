@@ -4,13 +4,10 @@ set -eu
 # Print colors:
 FMT_RED=$(printf '\033[31m')
 FMT_GREEN=$(printf '\033[32m')
-FMT_BLUE=$(printf '\033[34m')
-FMT_YELLOW=$(printf '\033[33m')
-FMT_WHITE=$(printf '\033[37m')
 FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
-DEFAULT_SHELL=$(basename $SHELL)
+DEFAULT_SHELL=$(basename "$SHELL")
 BASEDIR=$(pwd)
 SHELLCONF=""
 
@@ -32,17 +29,17 @@ else
 fi
 
 # Check if the aliases are already written to shell config:
-if [[ $(grep $BASEDIR $SHELLCONF) ]]; then
+if [[ $(grep "$BASEDIR" "$SHELLCONF") ]]; then
   echo "${FMT_RED}*** Alias seems to be already applied to $SHELLCONF: exit${FMT_RESET}"
   exit 0
 fi
 
 # Append aliases to shell config:
 echo "${FMT_GREEN}*** Appending alias to $SHELLCONF${FMT_RESET}"
-echo >> $SHELLCONF
-echo $ALIAS1 >> $SHELLCONF
-echo $ALIAS2 >> $SHELLCONF
-echo $ALIAS3 >> $SHELLCONF
-echo $ALIAS4 >> $SHELLCONF
-echo $ALIAS5 >> $SHELLCONF
+echo >> "$SHELLCONF"
+echo "$ALIAS1" >> "$SHELLCONF"
+echo "$ALIAS2" >> "$SHELLCONF"
+echo "$ALIAS3" >> "$SHELLCONF"
+echo "$ALIAS4" >> "$SHELLCONF"
+echo "$ALIAS5" >> "$SHELLCONF"
 echo "${FMT_BOLD}*** Please reload your shell: source $SHELLCONF${FMT_RESET}"

@@ -5,6 +5,7 @@ VS_CODE_INIT_INST_DIR := $(INSTALL_DIR)/share/vscode_init
 
 SCRIPTS := $(wildcard bin/*)
 VSCODE_INIT := $(wildcard share/vscode_init/*)
+CHECK := $(shell command -v shellcheck 2> /dev/null)
 
 .DEFAULT_GOAL := help
 
@@ -17,11 +18,23 @@ help:
 	@echo "  uninstall   Remove the installed scripts and vscode_init folder"
 	@echo "  append      Append aliases to shell profile for local install"
 	@echo "  update      Update the repo (git required)"
+	@echo "  lint        Lint all scripts using shellcheck"
 	@echo "  help        Show this help message"
+
+.PHONY: check
+check:
+ifndef CHECK
+	@echo "*** Please install shellcheck first"
+	@exit 1
+endif
 
 .PHONY: update
 update:
 	@git pull --rebase --autostash
+
+.PHONY: lint
+lint: check
+	@shellcheck */*.sh
 
 .PHONY: append
 append:
