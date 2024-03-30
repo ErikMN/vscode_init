@@ -14,6 +14,30 @@ FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
 #==============================================================================#
+# Helpers:
+
+# macOS does not use GNU realpath:
+realpath_macos() {
+  [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+# Check if a provided directory exists, exit if it does not:
+check_directory_exists() {
+  if [ ! -d "$1" ]; then
+    echo "${FMT_RED}*** Error: Directory '$1' does not exist... exit${FMT_RESET}"
+    exit 1
+  fi
+}
+
+# Check if a provided directory already exists, exit if it does:
+check_directory_not_exists() {
+  if [ -d "$1" ]; then
+    echo "${FMT_RED}*** Error: Directory '$1' already exists... exit${FMT_RESET}"
+    exit 1
+  fi
+}
+
+#==============================================================================#
 # Initialization section:
 
 # Check input arguments:
@@ -56,11 +80,6 @@ OS=$(uname)
 ARCH=$(uname -m)
 APPLE_ARM="0"
 
-# macOS does not use GNU realpath:
-realpath_macos() {
-  [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
-}
-
 # OS specifics:
 if [ "$OS" = "Darwin" ]; then
   PROJECT_DIR=$(realpath_macos "$APP")
@@ -92,10 +111,14 @@ if [ "$DEBUG" = true ]; then
 fi
 
 # Exit if a directory of the same name as the project exists:
-if [ -d "$PROJECT_DIR" ]; then
-  echo "${FMT_RED}*** Error: '$PROJECT_DIR' already exists... exit${FMT_RESET}"
-  exit 1
-fi
+check_directory_not_exists "$PROJECT_DIR"
+
+# Validate vscode_init directories:
+check_directory_exists "$VSCODE_INIT_DIR"
+check_directory_exists "$VSCODE_INIT_DIR/$TEMPLATE_DIR"
+check_directory_exists "$VSCODE_INIT_DIR/$VSCODE_TPL"
+check_directory_exists "$VSCODE_INIT_DIR/macos"
+check_directory_exists "$VSCODE_INIT_DIR/workspace_settings"
 
 #==============================================================================#
 # Functions section:
@@ -112,11 +135,11 @@ q_cmd() {
 
 # Initialize a git repo with an initial commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
-  if ! $GIT > /dev/null; then
+  if ! $GIT >/dev/null; then
     echo "${FMT_RED}*** Git is not installed: skipping setup repo${FMT_RESET}"
     return
   fi
-  if (( $(echo "$GIT_VERSION" $GIT_SUPPORTED | awk '{print ($1 >= $2)}') )); then
+  if (($(echo "$GIT_VERSION" $GIT_SUPPORTED | awk '{print ($1 >= $2)}'))); then
     q_cmd git -C "$PROJECT_DIR" init -b main
   else
     q_cmd git -C "$PROJECT_DIR" init && q_cmd git -C "$PROJECT_DIR" checkout -b main
@@ -156,7 +179,7 @@ SETUP_PROJECT() {
 
 # Start Visual Studio Code if it is installed:
 START_VSCODE() {
-  if $VSCODE > /dev/null; then
+  if $VSCODE >/dev/null; then
     echo "${FMT_BLUE}*** Starting Visual Studio Code${FMT_RESET}"
     code "$PROJECT_DIR"
   else
