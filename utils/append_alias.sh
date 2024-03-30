@@ -29,17 +29,21 @@ else
 fi
 
 # Check if the aliases are already written to shell config:
-if [[ $(grep "$BASEDIR" "$SHELLCONF") ]]; then
+if grep -q "$BASEDIR" "$SHELLCONF"; then
   echo "${FMT_RED}*** Alias seems to be already applied to $SHELLCONF: exit${FMT_RESET}"
   exit 0
 fi
 
 # Append aliases to shell config:
 echo "${FMT_GREEN}*** Appending alias to $SHELLCONF${FMT_RESET}"
-echo >> "$SHELLCONF"
-echo "$ALIAS1" >> "$SHELLCONF"
-echo "$ALIAS2" >> "$SHELLCONF"
-echo "$ALIAS3" >> "$SHELLCONF"
-echo "$ALIAS4" >> "$SHELLCONF"
-echo "$ALIAS5" >> "$SHELLCONF"
+{
+  echo
+  echo "# VSCode init aliases:"
+  echo "$ALIAS1"
+  echo "$ALIAS2"
+  echo "$ALIAS3"
+  echo "$ALIAS4"
+  echo "$ALIAS5"
+} >>"$SHELLCONF"
+
 echo "${FMT_BOLD}*** Please reload your shell: source $SHELLCONF${FMT_RESET}"
