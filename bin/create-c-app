@@ -47,7 +47,7 @@ elif [ "$TEMPLATE" = cmeson ]; then
   VSCODE_TPL="tpl_vscode_meson"
 fi
 
-# Aoolication and OS parameters:
+# Application and OS parameters:
 VSCODE="command -v code >/dev/null 2>&1"
 GIT="command -v git >/dev/null 2>&1"
 GIT_VERSION=$(git --version | cut -d' ' -f3)
