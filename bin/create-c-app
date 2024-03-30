@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -eu
 
+#==============================================================================#
+# Helpers:
+
 # Set DEBUG from env:
 DEBUG="${DEBUG:-false}"
 
@@ -13,12 +16,19 @@ FMT_WHITE=$(printf '\033[37m')
 FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
-#==============================================================================#
-# Helpers:
-
 # macOS does not use GNU realpath:
 realpath_macos() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+# Silence a command:
+q_cmd() {
+  "$@" >/dev/null 2>&1
+  ret=$?
+  if [ $ret -ne 0 ]; then
+    echo "Error: Command '$*' failed"
+  fi
+  return $ret
 }
 
 # Check if a provided directory exists, exit if it does not:
@@ -123,16 +133,6 @@ check_directory_exists "$VSCODE_INIT_DIR/workspace_settings"
 #==============================================================================#
 # Functions section:
 
-# Silence a command:
-q_cmd() {
-  "$@" >/dev/null 2>&1
-  ret=$?
-  if [ $ret -ne 0 ]; then
-    echo "Error: Command '$*' failed"
-  fi
-  return $ret
-}
-
 # Initialize a git repo with an initial commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
   if ! $GIT >/dev/null; then
@@ -194,3 +194,5 @@ START_VSCODE() {
 SETUP_PROJECT
 START_VSCODE
 echo "${FMT_BOLD}${FMT_GREEN}*** Project created in:" "${FMT_WHITE}""$PROJECT_DIR${FMT_RESET}"
+
+#==============================================================================#
