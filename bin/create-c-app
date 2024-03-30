@@ -87,6 +87,7 @@ if [ "$DEBUG" = true ]; then
   printf "VSCODE_INIT_DIR:      %s\n" "$VSCODE_INIT_DIR"
   printf "TEMPLATE_DIR:         %s\n" "$TEMPLATE_DIR"
   printf "PROJECT_DESCRIPTION:  %s\n" "$PROJECT_DESCRIPTION"
+  printf "GIT_VERSION:          %s\n" "$GIT_VERSION"
   printf "\n"
 fi
 
