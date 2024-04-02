@@ -7,6 +7,9 @@ set -eu
 # Set DEBUG from env:
 DEBUG="${DEBUG:-false}"
 
+# Launch VSCode by default:
+VSC="${VSC:-true}"
+
 # Print colors:
 FMT_RED=$(printf '\033[31m')
 FMT_GREEN=$(printf '\033[32m')
@@ -179,6 +182,9 @@ SETUP_PROJECT() {
 
 # Start Visual Studio Code if it is installed:
 START_VSCODE() {
+  if [ "$VSC" = false ]; then
+    return
+  fi
   if $VSCODE >/dev/null; then
     echo "${FMT_BLUE}*** Starting Visual Studio Code${FMT_RESET}"
     code "$PROJECT_DIR"
