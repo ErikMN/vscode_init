@@ -24,6 +24,7 @@ help:
 	@echo "  append      Append aliases to shell profile for local install"
 	@echo "  update      Update the repo (git required)"
 	@echo "  lint        Lint all scripts using shellcheck"
+	@echo "  test        Test the scripts"
 	@echo "  help        Show this help message"
 
 # Check if shellcheck is installed:
@@ -48,6 +49,11 @@ lint: check
 .PHONY: append
 append:
 	@./utils/append_alias.sh
+
+# Test the scripts:
+.PHONY: test
+test:
+	@./test/test_vscode_init.sh
 
 # Check root access before installation or uninstallation:
 .PHONY: check_root_access
@@ -87,3 +93,8 @@ uninstall: check_root_access
 		echo "Removing empty directory: $(VS_CODE_INIT_SHARE)"; \
 		rmdir "$(VS_CODE_INIT_SHARE)"; \
 	fi
+
+# Clean test artifacts:
+.PHONY: clean
+clean:
+	$(RM) -r build
