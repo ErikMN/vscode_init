@@ -40,8 +40,15 @@ lint: check
 append:
 	@./utils/append_alias.sh
 
+.PHONY: check_root_access
+check_root_access:
+	@if [ ! -w "$(INSTALL_DIR)" ]; then \
+		echo "Error: $(INSTALL_DIR) requires root access to write to."; \
+		exit 1; \
+	fi
+
 .PHONY: install
-install: uninstall
+install: check_root_access uninstall
 	@mkdir -p "$(SCRIPTS_INST_DIR)"
 	@for script in $(SCRIPTS); do \
 		echo "Installing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
@@ -52,7 +59,7 @@ install: uninstall
 	cp -r $(VSCODE_INIT) "$(VS_CODE_INIT_INST_DIR)"
 
 .PHONY: uninstall
-uninstall:
+uninstall: check_root_access
 	@for script in $(SCRIPTS); do \
 		echo "Removing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 		rm -f "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
