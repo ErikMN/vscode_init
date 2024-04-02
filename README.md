@@ -64,6 +64,12 @@ to uninstall the scripts run (as root):
 make uninstall
 ```
 
+Use PREFIX to specify your own installation directory:
+
+```sh
+make install PREFIX=/usr/local
+```
+
 ## Optional shell profile alias
 
 If you don't want to install the scripts, they can be run directly. \

@@ -1,10 +1,16 @@
-INSTALL_DIR := /usr/local
+# Default installation directory:
+PREFIX ?= /usr/local
 
+# Installation directories:
+INSTALL_DIR := $(PREFIX)
 SCRIPTS_INST_DIR := $(INSTALL_DIR)/bin
 VS_CODE_INIT_INST_DIR := $(INSTALL_DIR)/share/vscode_init
 
+# Scripts and vscode_init folder:
 SCRIPTS := $(wildcard bin/*)
 VSCODE_INIT := $(wildcard share/vscode_init/*)
+
+# Check if shellcheck is installed:
 CHECK := $(shell command -v shellcheck 2> /dev/null)
 
 .DEFAULT_GOAL := help
