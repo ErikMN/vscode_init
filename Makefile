@@ -4,7 +4,8 @@ PREFIX ?= /usr/local
 # Installation directories:
 INSTALL_DIR := $(PREFIX)
 SCRIPTS_INST_DIR := $(INSTALL_DIR)/bin
-VS_CODE_INIT_INST_DIR := $(INSTALL_DIR)/share/vscode_init
+VS_CODE_INIT_SHARE := $(INSTALL_DIR)/share
+VS_CODE_INIT_INST_DIR := $(VS_CODE_INIT_SHARE)/vscode_init
 
 # Scripts and vscode_init folder:
 SCRIPTS := $(wildcard bin/*)
@@ -72,3 +73,12 @@ uninstall: check_root_access
 	done
 	@echo "Removing $(VS_CODE_INIT_INST_DIR)"; \
 	rm -rf "$(VS_CODE_INIT_INST_DIR)"
+
+	@if [ -d "$(SCRIPTS_INST_DIR)" ] && [ -z "$$(ls -A "$(SCRIPTS_INST_DIR)")" ]; then \
+		echo "Removing empty directory: $(SCRIPTS_INST_DIR)"; \
+		rmdir "$(SCRIPTS_INST_DIR)"; \
+	fi
+	@if [ -d "$(VS_CODE_INIT_SHARE)" ] && [ -z "$$(ls -A "$(VS_CODE_INIT_SHARE)")" ]; then \
+		echo "Removing empty directory: $(VS_CODE_INIT_SHARE)"; \
+		rmdir "$(VS_CODE_INIT_SHARE)"; \
+	fi
