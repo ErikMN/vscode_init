@@ -11,11 +11,9 @@ VS_CODE_INIT_INST_DIR := $(VS_CODE_INIT_SHARE)/vscode_init
 SCRIPTS := $(wildcard bin/*)
 VSCODE_INIT := $(wildcard share/vscode_init/*)
 
-# Check if shellcheck is installed:
-CHECK := $(shell command -v shellcheck 2> /dev/null)
-
 .DEFAULT_GOAL := help
 
+# Provide information on available targets:
 .PHONY: help
 help:
 	@echo "Usage: make [target]"
@@ -28,25 +26,30 @@ help:
 	@echo "  lint        Lint all scripts using shellcheck"
 	@echo "  help        Show this help message"
 
+# Check if shellcheck is installed:
 .PHONY: check
 check:
-ifndef CHECK
-	@echo "*** Please install shellcheck first"
-	@exit 1
-endif
+	@command -v shellcheck >/dev/null 2>&1 || { \
+		echo >&2 "*** Please install shellcheck first"; \
+		exit 1; \
+	}
 
+# Update the repository:
 .PHONY: update
 update:
 	@git pull --rebase --autostash
 
+# Lint scripts using shellcheck:
 .PHONY: lint
 lint: check
 	@shellcheck */*.sh
 
+# Append aliases to shell profile for local install:
 .PHONY: append
 append:
 	@./utils/append_alias.sh
 
+# Check root access before installation or uninstallation:
 .PHONY: check_root_access
 check_root_access:
 	@if [ ! -w "$(INSTALL_DIR)" ]; then \
@@ -54,6 +57,7 @@ check_root_access:
 		exit 1; \
 	fi
 
+# Install scripts and vscode_init folder:
 .PHONY: install
 install: check_root_access uninstall
 	@mkdir -p "$(SCRIPTS_INST_DIR)"
@@ -65,6 +69,7 @@ install: check_root_access uninstall
 	mkdir -p "$(VS_CODE_INIT_INST_DIR)"; \
 	cp -r $(VSCODE_INIT) "$(VS_CODE_INIT_INST_DIR)"
 
+# Remove installed scripts and vscode_init folder:
 .PHONY: uninstall
 uninstall: check_root_access
 	@for script in $(SCRIPTS); do \
