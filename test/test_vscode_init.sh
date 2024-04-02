@@ -78,6 +78,8 @@ if check_command "meson"; then
   cd "$BASEDIR"/build/test4 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 fi
 
+cd "$BASEDIR"/build && "$BASEDIR"/utils/copy_tasks.sh && cd "$BASEDIR"
+
 #==============================================================================#
 # Uninstall vscode_init:
 
