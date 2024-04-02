@@ -26,6 +26,22 @@ check_exit_status() {
   fi
 }
 
+check_command() {
+  if ! command -v "$1" &>/dev/null; then
+    if [[ -n "${2-}" && "$2" == "exit" ]]; then
+      echo "${FMT_RED}Error: '$1' command not found: exit${FMT_RESET}"
+      exit 1
+    fi
+    echo "${FMT_YELLOW}Warning: '$1' command not found.${FMT_RESET}"
+    return 1
+  fi
+}
+
+#==============================================================================#
+# Check prerequisites:
+
+check_command make "exit"
+
 #==============================================================================#
 # Setup test and install vscode_init locally:
 
@@ -57,8 +73,10 @@ cd "$BASEDIR"/build/test2 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 "$BASEDIR"/build/bin/create-shared-lib-c-app "$BASEDIR"/build/test3
 cd "$BASEDIR"/build/test3 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 
-"$BASEDIR"/build/bin/create-c-meson-app "$BASEDIR"/build/test4
-cd "$BASEDIR"/build/test4 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
+if check_command "meson"; then
+  "$BASEDIR"/build/bin/create-c-meson-app "$BASEDIR"/build/test4
+  cd "$BASEDIR"/build/test4 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
+fi
 
 #==============================================================================#
 # Uninstall vscode_init:
