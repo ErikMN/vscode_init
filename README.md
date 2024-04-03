@@ -1,13 +1,13 @@
-# VSCODE INIT <img src="vscode.svg" width="32"/>
+# VSCODE INIT <img src="vscode.svg" width="32" alt="logo"/>
 
-Automate creation of C/C++ projects with Visual Studio Code \
-This automation tool is mainly targetet Linux and macOS users. \
+Automate creation of C/C++ projects with Visual Studio Code <br/>
+This automation tool is mainly targetet **Linux** and **macOS** users. <br/>
 Clone this project into your ```$HOME``` directory (or any directory really).
 
 ## Elevator pitch
 
 * Simple to setup and use
-* No need to install
+* No need to install (but possible)
 * No hidden configuration files
 * No modification of your system
 * Inspired by [Create React App](https://create-react-app.dev/)
@@ -15,8 +15,8 @@ Clone this project into your ```$HOME``` directory (or any directory really).
 
 ## Requirements
 
-Bash is really the only true requirement to run the script. \
-The list below is additional software to get the most out of VSCODE INIT.
+**Bash** is really the only true requirement to run the script. <br/>
+The list below is additional software to get the most out of **VSCODE INIT**.
 
 * [Bash](https://www.gnu.org/software/bash/) or [Zsh](https://www.zsh.org/)
 * [Visual Studio Code](https://code.visualstudio.com/)
@@ -57,14 +57,14 @@ To install the scripts run (as root):
 make install
 ```
 
-default location is ```/usr/local/``` \
+default location is ```/usr/local/``` <br/>
 to uninstall the scripts run (as root):
 
 ```sh
 make uninstall
 ```
 
-Use PREFIX to specify your own installation directory:
+Use **PREFIX** to specify your own installation directory:
 
 ```sh
 make install PREFIX=/usr/local
@@ -72,8 +72,8 @@ make install PREFIX=/usr/local
 
 ## Optional shell profile alias
 
-If you don't want to install the scripts, they can be run directly. \
-Add to ```~/.zshrc``` (or your shell config of choice). \
+If you don't want to install the scripts, they can be run directly. <br/>
+Add to ```~/.zshrc``` (or your shell config of choice). <br/>
 These aliases can be added automatically by running ```append_alias.sh```
 
 ```sh
@@ -120,7 +120,7 @@ To build your newly created C project run:
 make
 ```
 
-in the root directory of the project. \
+in the root directory of the project. <br/>
 To build a production suitable binary run:
 
 ```sh
@@ -129,7 +129,7 @@ FINAL=y make
 
 ## Custom project workspace settings
 
-Edit `settings.json` to add custom project workspace settings. \
+Edit `settings.json` to add custom project workspace settings. <br/>
 Example: source a script for zsh at terminal startup.
 
 ```sh

@@ -3,7 +3,7 @@
 Install the GCC, G++ cross compilers and support programs by typing:
 
 ```sh
-sudo apt-get install libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-gnueabi libncurses5-dev build-essential bison flex libssl-dev bc
+sudo apt install libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-gnueabi libncurses5-dev build-essential bison flex libssl-dev bc
 ```
 
 ## Install GCC for ARM
@@ -11,13 +11,13 @@ sudo apt-get install libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-
 ### 32-bit ARM
 
 ```sh
-sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+sudo apt install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 ```
 
 ### 64-bit ARM
 
 ```sh
-sudo apt-get install gcc-aarch64-linux-gnu
+sudo apt install gcc-aarch64-linux-gnu
 ```
 
 ### Makefile
