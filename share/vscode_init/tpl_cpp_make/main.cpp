@@ -26,7 +26,7 @@ main(int argc, char *argv[])
   (void)argc;
   (void)argv;
 
-  cout << endl << "Hello World" << endl;
+  cout << endl << "Hello World!" << endl;
   cout << __FILE__ << ":" << __LINE__ << endl;
 
 #ifdef DEBUG
