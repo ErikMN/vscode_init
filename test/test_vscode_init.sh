@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -eu
 
+BASEDIR=$(pwd)
+
 #==============================================================================#
 # Helpers:
 
@@ -8,7 +10,29 @@ set -eu
 FMT_GREEN=$(printf '\033[32m')
 FMT_YELLOW=$(printf '\033[33m')
 FMT_RED=$(printf '\033[31m')
+FMT_BLUE=$(printf '\033[34m')
 FMT_RESET=$(printf '\033[0m')
+
+display_time() {
+  local milliseconds="$1"
+  local seconds=$((milliseconds / 1000))
+  local milliseconds=$((milliseconds % 1000))
+  printf "%02d:%02d:%02d.%03d" "$((seconds / 3600))" "$((seconds % 3600 / 60))" "$((seconds % 60))" "$milliseconds"
+}
+
+display_start_time() {
+  start_time=$(date +%s%N)
+  echo "${FMT_BLUE}*** Start test at $(date +"%T.%3N")${FMT_RESET}"
+}
+
+display_end_time() {
+  end_time=$(date +%s%N)
+  elapsed_nanoseconds=$((end_time - start_time))
+  elapsed_milliseconds=$((elapsed_nanoseconds / 1000000))
+  echo
+  echo "${FMT_GREEN}*** End test OK at $(date +"%T.%3N") Elapsed time: $(display_time $elapsed_milliseconds)${FMT_RESET}"
+  echo
+}
 
 show_git_log() {
   local dir=$1
@@ -45,11 +69,11 @@ check_command make "exit"
 #==============================================================================#
 # Setup test and install vscode_init locally:
 
-echo "${FMT_GREEN}*** Start test${FMT_RESET}"
+echo "${FMT_GREEN}*** Start test $(basename "$0")${FMT_RESET}"
+echo "${FMT_BLUE}*** BASEDIR: $BASEDIR${FMT_RESET}"
+echo
 
-BASEDIR=$(pwd)
-
-echo "${FMT_GREEN}$BASEDIR${FMT_RESET}"
+display_start_time
 
 rm -rf build
 mkdir build
@@ -86,9 +110,6 @@ cd "$BASEDIR"/build && "$BASEDIR"/utils/copy_tasks.sh && cd "$BASEDIR"
 make uninstall PREFIX="$BASEDIR"/build
 
 check_exit_status
-
-echo
-echo "${FMT_GREEN}*** Done.${FMT_RESET}"
-echo
+display_end_time
 
 #==============================================================================#
