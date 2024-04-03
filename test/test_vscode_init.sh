@@ -8,6 +8,8 @@ BUILDDIR="$BASEDIR"/$BUILD
 #==============================================================================#
 # Helpers:
 
+OS=$(uname)
+
 # Print colors:
 FMT_GREEN=$(printf '\033[32m')
 FMT_YELLOW=$(printf '\033[33m')
@@ -28,6 +30,10 @@ display_start_time() {
 }
 
 display_end_time() {
+  if [ "$OS" = "Darwin" ]; then
+    echo "${FMT_GREEN}*** End test OK at $(date +"%T")${FMT_RESET}"
+    return
+  fi
   end_time=$(date +%s%N)
   elapsed_nanoseconds=$((end_time - start_time))
   elapsed_milliseconds=$((elapsed_nanoseconds / 1000000))
