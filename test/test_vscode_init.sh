@@ -2,6 +2,8 @@
 set -eu
 
 BASEDIR=$(pwd)
+BUILD=build
+BUILDDIR="$BASEDIR"/$BUILD
 
 #==============================================================================#
 # Helpers:
@@ -69,6 +71,8 @@ check_command make "exit"
 #==============================================================================#
 # Setup test and install vscode_init locally:
 
+export PREFIX="$BUILDDIR"
+
 echo "${FMT_GREEN}*** Start test $(basename "$0")${FMT_RESET}"
 echo "${FMT_BLUE}*** BASEDIR: $BASEDIR${FMT_RESET}"
 echo
@@ -78,7 +82,7 @@ display_start_time
 rm -rf build
 mkdir build
 
-make install PREFIX="$BASEDIR"/build
+make install
 
 check_exit_status
 
@@ -88,26 +92,26 @@ check_exit_status
 export DEBUG=true
 export VSC=false
 
-"$BASEDIR"/build/bin/create-c-app "$BASEDIR"/build/test1
-cd "$BASEDIR"/build/test1 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
+"$BUILDDIR"/bin/create-c-app "$BUILDDIR"/test1
+cd "$BUILDDIR"/test1 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 
-"$BASEDIR"/build/bin/create-cpp-app "$BASEDIR"/build/test2
-cd "$BASEDIR"/build/test2 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
+"$BUILDDIR"/bin/create-cpp-app "$BUILDDIR"/test2
+cd "$BUILDDIR"/test2 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 
-"$BASEDIR"/build/bin/create-shared-lib-c-app "$BASEDIR"/build/test3
-cd "$BASEDIR"/build/test3 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
+"$BUILDDIR"/bin/create-shared-lib-c-app "$BUILDDIR"/test3
+cd "$BUILDDIR"/test3 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 
 if check_command "meson"; then
-  "$BASEDIR"/build/bin/create-c-meson-app "$BASEDIR"/build/test4
-  cd "$BASEDIR"/build/test4 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
+  "$BUILDDIR"/bin/create-c-meson-app "$BUILDDIR"/test4
+  cd "$BUILDDIR"/test4 && make run && show_git_log "$(pwd)" && cd "$BASEDIR"
 fi
 
-cd "$BASEDIR"/build && "$BASEDIR"/utils/copy_tasks.sh && cd "$BASEDIR"
+cd "$BUILDDIR" && "$BASEDIR"/utils/copy_tasks.sh && cd "$BASEDIR"
 
 #==============================================================================#
 # Uninstall vscode_init:
 
-make uninstall PREFIX="$BASEDIR"/build
+make uninstall
 
 check_exit_status
 display_end_time
