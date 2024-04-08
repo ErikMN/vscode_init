@@ -1,4 +1,28 @@
 #!/usr/bin/env bash
+#
+# VSCODE INIT
+#
+# This script initializes a new project directory with templates and configurations
+# for various programming languages and tools, including support for Visual Studio Code.
+# The script also initializes a Git repository with an initial commit and starts
+# Visual Studio Code for the newly created project.
+#
+# Usage:
+#   create-c-app <project-directory>
+#
+#   <project-directory>: The directory where the new project will be created.
+#
+# Example:
+#   create-c-app my-app
+#
+# This command will initialize a new C project named 'my-app' in the current directory.
+#
+# GitHub:
+#   https://github.com/ErikMN/vscode_init
+#
+# License:
+#   MIT License
+#
 set -eu
 
 #==============================================================================#
