@@ -4,8 +4,8 @@ LDLIBS = -lm
 
 # PKGS += mylib
 ifdef PKGS
-	LDLIBS += $(shell pkg-config --libs $(PKGS))
-	CFLAGS += $(shell pkg-config --cflags $(PKGS))
+  LDLIBS += $(shell pkg-config --libs $(PKGS))
+  CFLAGS += $(shell pkg-config --cflags $(PKGS))
 endif
 
 SRCS = $(wildcard *.c)
@@ -16,19 +16,19 @@ CFLAGS += -Werror
 
 # FINAL=y
 ifeq ($(FINAL), y)
-	LDFLAGS += -s
-	CFLAGS += -DNDEBUG -g0 -O2
-	CFLAGS += -Wpedantic -Wextra -Wmaybe-uninitialized
-	CFLAGS += -W -Wformat=2 -Wpointer-arith -Wbad-function-cast
-	CFLAGS += -Wstrict-prototypes -Wmissing-prototypes -Winline
-	CFLAGS += -Wdisabled-optimization -Wfloat-equal -Wall
+  LDFLAGS += -s
+  CFLAGS += -DNDEBUG -g0 -O2
+  CFLAGS += -Wpedantic -Wextra -Wmaybe-uninitialized
+  CFLAGS += -W -Wformat=2 -Wpointer-arith -Wbad-function-cast
+  CFLAGS += -Wstrict-prototypes -Wmissing-prototypes -Winline
+  CFLAGS += -Wdisabled-optimization -Wfloat-equal -Wall
 else
-	# ASAN=y
-	CFLAGS += -g3 -DDEBUG
-	ifeq ($(ASAN), y)
-		CFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
-		LDLIBS += -fsanitize=address
-	endif
+  # ASAN=y
+  CFLAGS += -g3 -DDEBUG
+  ifeq ($(ASAN), y)
+    CFLAGS += -fsanitize=address -O1 -fno-omit-frame-pointer
+    LDLIBS += -fsanitize=address
+  endif
 endif
 
 .PHONY: all
