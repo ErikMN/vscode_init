@@ -13,18 +13,7 @@
 #include <assert.h>
 #include <stdint.h>
 #include <math.h>
-
-#ifdef DEBUG
-#define DBUG(x) x
-#else
-#define DBUG(x)
-#endif
-
-#define print_debug(...) DBUG(printf(__VA_ARGS__))
-
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof(0 [x]))
-#endif
+#include "common.h"
 
 int
 main(int argc, char *argv[])
