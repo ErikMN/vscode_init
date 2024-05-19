@@ -1,7 +1,7 @@
 # VSCODE INIT <img src="img/vscode.svg" width="32" alt="logo"/>
 
 Automate creation of C/C++ projects with Visual Studio Code <br/>
-This automation tool is mainly targetet **Linux** and **macOS** users. <br/>
+This automation tool is mainly targeted at **Linux** and **macOS** users. <br/>
 Clone this project into your ```$HOME``` directory (or any directory really).
 
 <img src="img/vsc_init.gif" width="800" alt="demo"/>
