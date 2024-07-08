@@ -52,10 +52,10 @@ realpath_macos() {
 
 # Silence a command, exit if it fails:
 q_cmd() {
-  "$@" >/dev/null 2>&1
+  error_output=$("$@" 2>&1)
   ret=$?
   if [ $ret -ne 0 ]; then
-    echo "${FMT_RED}*** Error: Command '$*' failed${FMT_RESET}"
+    echo "${FMT_RED}*** Error: Command '$*' failed with message: $error_output${FMT_RESET}"
     exit 1
   fi
 }
