@@ -20,7 +20,7 @@ LIB_TARGET = $(LIB_DIR)/lib$(PROGS).so
 LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 LIB_OBJ = $(LIB_SRCS:.c=.o)
 LIB_LDLIBS += -lm
-LIB_LDFLAGS = -shared
+LIB_LDFLAGS = -Wl,--soname=$(@F) -shared
 
 LIB_PATH = $(shell pwd)/$(LIB_DIR)
 LDFLAGS += -L$(LIB_PATH)
