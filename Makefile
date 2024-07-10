@@ -35,9 +35,17 @@ check:
 		exit 1; \
 	}
 
+# Check if git is installed:
+.PHONY: check_git
+check_git:
+	@command -v git >/dev/null 2>&1 || { \
+		echo >&2 "*** Please install git first"; \
+		exit 1; \
+	}
+
 # Update the repository:
 .PHONY: update
-update:
+update: check_git
 	@git pull --rebase --autostash
 
 # Lint scripts using shellcheck:
@@ -67,11 +75,12 @@ check_root_access:
 .PHONY: install
 install: check_root_access uninstall
 	@mkdir -p "$(SCRIPTS_INST_DIR)"
+	@echo "Creating directory: $(SCRIPTS_INST_DIR)"
 	@for script in $(SCRIPTS); do \
 		echo "Installing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 		cp "$$script" "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 	done
-	@echo "Installing $(VS_CODE_INIT_INST_DIR)"; \
+	@echo "Installing to $(VS_CODE_INIT_INST_DIR)"; \
 	mkdir -p "$(VS_CODE_INIT_INST_DIR)"; \
 	cp -r $(VSCODE_INIT) "$(VS_CODE_INIT_INST_DIR)"
 
