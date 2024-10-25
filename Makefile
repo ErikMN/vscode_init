@@ -12,6 +12,7 @@ SCRIPTS := $(wildcard bin/*)
 VSCODE_INIT := $(wildcard share/vscode_init/*)
 
 .DEFAULT_GOAL := help
+RM ?= rm -f
 
 # Provide information on available targets:
 .PHONY: help
@@ -89,10 +90,10 @@ install: check_root_access uninstall
 uninstall: check_root_access
 	@for script in $(SCRIPTS); do \
 		echo "Removing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
-		rm -f "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
+		$(RM) "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 	done
 	@echo "Removing $(VS_CODE_INIT_INST_DIR)"; \
-	rm -rf "$(VS_CODE_INIT_INST_DIR)"
+	$(RM) -r "$(VS_CODE_INIT_INST_DIR)"
 
 	@if [ -d "$(SCRIPTS_INST_DIR)" ] && [ -z "$$(ls -A "$(SCRIPTS_INST_DIR)")" ]; then \
 		echo "Removing empty directory: $(SCRIPTS_INST_DIR)"; \
