@@ -74,14 +74,14 @@ check_root_access:
 # Install scripts and vscode_init folder:
 .PHONY: install
 install: check_root_access uninstall
-	@mkdir -p "$(SCRIPTS_INST_DIR)"
 	@echo "Creating directory: $(SCRIPTS_INST_DIR)"
+	@install -d "$(SCRIPTS_INST_DIR)"
 	@for script in $(SCRIPTS); do \
 		echo "Installing $(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
-		cp "$$script" "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
+		install -m 755 "$$script" "$(SCRIPTS_INST_DIR)/$$(basename $$script)"; \
 	done
 	@echo "Installing to $(VS_CODE_INIT_INST_DIR)"; \
-	mkdir -p "$(VS_CODE_INIT_INST_DIR)"; \
+	install -d "$(VS_CODE_INIT_INST_DIR)"; \
 	cp -r $(VSCODE_INIT) "$(VS_CODE_INIT_INST_DIR)"
 
 # Remove installed scripts and vscode_init folder:
