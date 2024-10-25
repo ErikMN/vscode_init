@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "*** Git hook start"
+echo
+
+./test/test_vscode_init.sh
+
+echo
+echo "*** Git hook done"

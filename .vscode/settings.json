@@ -1,4 +1,21 @@
 {
+  "terminal.integrated.profiles.linux": {
+    "zsh": {
+      "path": "zsh",
+      "args": [
+        "-c",
+        "source ${workspaceFolder}/utils/setuprepo.sh; zsh"
+      ]
+    },
+    "bash": {
+      "path": "bash",
+      "args": [
+        "-l",
+        "-c",
+        "source ${workspaceFolder}/utils/setuprepo.sh; bash"
+      ]
+    }
+  },
   "mesonbuild.configureOnOpen": false,
   "mesonbuild.downloadLanguageServer": false
 }
