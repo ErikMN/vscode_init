@@ -11,7 +11,9 @@ endif
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
-CFLAGS += -Werror
+DEPS = $(SRCS:.c=.d)
+
+CFLAGS += -Werror -MMD -MP
 # CFLAGS += -Wvla
 # CFLAGS += -std=c99
 
@@ -19,11 +21,15 @@ LIB_DIR = my_lib
 LIB_TARGET = $(LIB_DIR)/lib$(PROGS).so
 LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 LIB_OBJ = $(LIB_SRCS:.c=.o)
+LIB_DEPS = $(LIB_SRCS:.c=.d)
+
 LIB_LDLIBS += -lm
 LIB_LDFLAGS = -Wl,--soname=$(@F) -shared
 
 LIB_PATH = $(shell pwd)/$(LIB_DIR)
 LDFLAGS += -L$(LIB_PATH)
+
+-include $(DEPS) $(LIB_DEPS)
 
 # FINAL=y
 ifeq ($(FINAL), y)
@@ -96,4 +102,4 @@ indent:
 
 .PHONY: clean
 clean:
-	$(RM) $(PROGS) $(OBJS) $(LIB_TARGET) $(LIB_OBJ)
+	$(RM) $(PROGS) $(OBJS) $(LIB_TARGET) $(LIB_OBJ) $(DEPS) $(LIB_DEPS)

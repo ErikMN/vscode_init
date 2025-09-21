@@ -10,9 +10,12 @@ endif
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
-CFLAGS += -Werror
+DEPS = $(SRCS:.c=.d)
+CFLAGS += -Werror -MMD -MP
 # CFLAGS += -Wvla
 # CFLAGS += -std=c99
+
+-include $(DEPS)
 
 # FINAL=y
 ifeq ($(FINAL), y)
@@ -77,4 +80,4 @@ indent:
 
 .PHONY: clean
 clean:
-	$(RM) $(PROGS) $(OBJS)
+	$(RM) $(PROGS) $(OBJS) $(DEPS)
