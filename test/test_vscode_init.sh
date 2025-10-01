@@ -123,3 +123,51 @@ check_exit_status
 display_end_time
 
 #==============================================================================#
+# Test version_ge helper:
+
+version_ge() {
+  local i
+  local v1 v2
+  IFS=. read -ra v1 <<<"$1"
+  IFS=. read -ra v2 <<<"$2"
+  for ((i = 0; i < ${#v1[@]} || i < ${#v2[@]}; i++)); do
+    local n1=${v1[i]:-0}
+    local n2=${v2[i]:-0}
+    if ((10#$n1 > 10#$n2)); then return 0; fi
+    if ((10#$n1 < 10#$n2)); then return 1; fi
+  done
+  return 0
+}
+
+test_version_ge() {
+  echo "${FMT_BLUE}*** Running version_ge tests${FMT_RESET}"
+  run_test() {
+    local s1=$1 s2=$2 expected=$3
+    local result
+    if version_ge "$s1" "$s2"; then
+      result=0
+    else
+      result=1
+    fi
+    if [ "$result" -eq "$expected" ]; then
+      echo "${FMT_GREEN}PASS:${FMT_RESET} version_ge $s1 >= $s2"
+    else
+      echo "${FMT_RED}FAIL:${FMT_RESET} version_ge $s1 >= $s2 (expected $expected got $result)"
+      exit 1
+    fi
+  }
+  # Format: v1 v2 expected_result(0=success,1=failure)
+  run_test "2.28.0" "2.28.0" 0 # equal
+  run_test "2.29.0" "2.28.0" 0 # greater
+  run_test "2.28.1" "2.28.0" 0 # patch greater
+  run_test "2.28.0" "2.29.0" 1 # less
+  run_test "2.7" "2.28.0" 1    # much less
+  run_test "2.28" "2.28.0" 0   # equal with missing segment
+  run_test "10.0.1" "9.9.9" 0  # big jump
+
+  echo "${FMT_GREEN}*** version_ge tests passed${FMT_RESET}"
+  echo
+}
+test_version_ge
+
+#==============================================================================#
