@@ -76,6 +76,21 @@ check_directory_not_exists() {
   fi
 }
 
+# NOTE: sort -V might not work on older macOS versions so use this:
+version_ge() {
+  local i
+  local v1 v2
+  IFS=. read -ra v1 <<<"$1"
+  IFS=. read -ra v2 <<<"$2"
+  for ((i = 0; i < ${#v1[@]} || i < ${#v2[@]}; i++)); do
+    local n1=${v1[i]:-0}
+    local n2=${v2[i]:-0}
+    if ((10#$n1 > 10#$n2)); then return 0; fi
+    if ((10#$n1 < 10#$n2)); then return 1; fi
+  done
+  return 0
+}
+
 #==============================================================================#
 # Initialization section:
 
@@ -115,13 +130,18 @@ elif [ "$TEMPLATE" = cmeson ]; then
 fi
 
 # Application and OS parameters:
-VSCODE="command -v code >/dev/null 2>&1"
-GIT="command -v git >/dev/null 2>&1"
-GIT_VERSION=$(git --version | cut -d' ' -f3)
+VSCODE=$(command -v code || true)
+GIT=$(command -v git || true)
+GIT_VERSION=""
 GIT_SUPPORTED="2.28.0"
 OS=$(uname)
 ARCH=$(uname -m)
 APPLE_ARM="0"
+
+# Get the git version if git is installed:
+if [ -n "$GIT" ]; then
+  GIT_VERSION=$("$GIT" --version | awk '{print $3}')
+fi
 
 # OS specifics:
 if [ "$OS" = "Darwin" ]; then
@@ -169,16 +189,16 @@ check_directory_exists "$VSCODE_INIT_DIR/workspace_settings"
 
 # Initialize a git repo with an initial commit (git < 2.28.0 does not support 'git init -b <name>'):
 GIT_INIT_REPO() {
-  if ! $GIT >/dev/null; then
+  if [ -z "$GIT" ]; then
     echo "${FMT_RED}*** Git is not installed: skipping setup repo${FMT_RESET}"
     return
   fi
-  if (($(echo "$GIT_VERSION" $GIT_SUPPORTED | awk '{print ($1 >= $2)}'))); then
-    q_cmd git -C "$PROJECT_DIR" init -b main
+  if version_ge "$GIT_VERSION" "$GIT_SUPPORTED"; then
+    q_cmd "$GIT" -C "$PROJECT_DIR" init -b main
   else
-    q_cmd git -C "$PROJECT_DIR" init && q_cmd git -C "$PROJECT_DIR" checkout -b main
+    q_cmd "$GIT" -C "$PROJECT_DIR" init && q_cmd "$GIT" -C "$PROJECT_DIR" checkout -b main
   fi
-  q_cmd git -C "$PROJECT_DIR" add -A && q_cmd git -C "$PROJECT_DIR" commit -m "Initial commit"
+  q_cmd "$GIT" -C "$PROJECT_DIR" add -A && q_cmd "$GIT" -C "$PROJECT_DIR" commit -m "Initial commit"
 }
 
 # Set project name in template files:
@@ -229,9 +249,9 @@ START_VSCODE() {
   if [ "$VSC" = false ]; then
     return
   fi
-  if $VSCODE >/dev/null; then
+  if [ -n "$VSCODE" ]; then
     echo "${FMT_BLUE}*** Starting Visual Studio Code${FMT_RESET}"
-    code "$PROJECT_DIR"
+    "$VSCODE" "$PROJECT_DIR"
   else
     echo "${FMT_RED}*** Visual Studio Code is not installed${FMT_RESET}"
   fi
@@ -246,6 +266,6 @@ SETUP_PROJECT || {
   exit 1
 }
 START_VSCODE
-echo "${FMT_BOLD}${FMT_GREEN}*** Project created in:" "${FMT_WHITE}""$PROJECT_DIR${FMT_RESET}"
+echo "${FMT_BOLD}${FMT_GREEN}*** Project created in: ${FMT_WHITE}${PROJECT_DIR}${FMT_RESET}"
 
 #==============================================================================#
