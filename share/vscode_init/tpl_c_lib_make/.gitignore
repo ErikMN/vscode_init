@@ -3,3 +3,4 @@ xxxxxxxxx
 *.so
 *.exe
 *.o
+*.d
