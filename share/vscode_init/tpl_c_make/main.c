@@ -1,18 +1,18 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <libgen.h>
-#include <errno.h>
-#include <string.h>
-#include <getopt.h>
-#include <sys/types.h>
-#include <stdbool.h>
-#include <sys/stat.h>
-#include <limits.h>
 #include <assert.h>
-#include <stdint.h>
+#include <ctype.h>
+#include <errno.h>
+#include <getopt.h>
+#include <libgen.h>
+#include <limits.h>
 #include <math.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "common.h"
 
 int
