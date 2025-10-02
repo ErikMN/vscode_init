@@ -36,6 +36,14 @@ check:
 		exit 1; \
 	}
 
+# Check if shfmt is installed:
+.PHONY: check_shfmt
+check_shfmt:
+	@command -v shfmt >/dev/null 2>&1 || { \
+		echo >&2 "*** Please install shfmt first"; \
+		exit 1; \
+	}
+
 # Check if git is installed:
 .PHONY: check_git
 check_git:
@@ -53,6 +61,11 @@ update: check_git
 .PHONY: lint
 lint: check
 	@shellcheck */*.sh
+
+# Format scripts using shfmt:
+.PHONY: format
+format: check_shfmt
+	@shfmt -w -i 2 ./bin/*
 
 # Append aliases to shell profile for local install:
 .PHONY: append
